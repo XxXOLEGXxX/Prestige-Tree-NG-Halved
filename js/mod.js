@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "Prestige Tree Rewritten: New Game/",
+	name: "Prestige Tree Rewritten: True New Game/",
 	id: "ng/2",
 	author: "Jacorb",
 	pointsName: "points",

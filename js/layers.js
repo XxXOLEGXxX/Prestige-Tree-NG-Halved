@@ -655,7 +655,7 @@ addLayer("g", { //HALVEDLOL
 			"prestige-button",
 			"blank",
 			["display-text",
-				function() {return 'You have ' + format(player.g.power) + ' Generator Power, which boosts Point generation by '+format(tmp.g.powerEff)+'x'+(tmp.nerdMode?" ((x+1)^"+format(tmp.g.powerExp)+")":"")},
+				function() {return 'You have ' + format(player.g.power) + ' Generator Power, which boosts Point generation by '+format(tmp.g.powerEff)+'x'+(tmp.nerdMode?" ((x/2+1)^"+format(tmp.g.powerExp)+")":"")},
 					{}],
 			"blank",
 			["display-text",
