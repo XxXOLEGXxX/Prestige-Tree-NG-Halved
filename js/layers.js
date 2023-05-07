@@ -560,7 +560,7 @@ addLayer("g", { //HALVEDLOL
         baseAmount() {return player.points}, // Get the current amount of baseResource
         type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
 		branches: ["p"],
-        exponent() { return ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?1.1:1.175 }, // Prestige currency exponent //HALVEDLOL
+        exponent() { return ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?1.175:1.25 }, // Prestige currency exponent //HALVEDLOL
 		base() { return ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?3.75:5 }, //HALVEDLOL
 		gainMult() { //HALVEDLOL
 			let mult = new Decimal(1);
@@ -9138,6 +9138,7 @@ addLayer("a", { //HALVEDLOL
         }},
         color: "yellow",
         row: "side",
+		position: 0,
         layerShown() {return true}, 
         tooltip() { // Optional, tooltip displays when the layer is locked
             return ("Achievements")
@@ -9659,6 +9660,7 @@ addLayer("sc", { //HALVEDLOL
 	color: "#e6ff69",
 	symbol: "SC",
 	row: "side",
+	position: 1,
 	layerShown() { return hasAchievement("a", 21) && player.scShown },
 	tooltip: "Softcaps",
 	tabFormat: [
@@ -9682,6 +9684,7 @@ addLayer("ab", { //HALVEDLOL
 	color: "yellow",
 	symbol: "AB",
 	row: "side",
+	position: 2,
 	layerShown() { return player.t.unlocked || player.s.unlocked },
 	tooltip: "Autobuyers",
 	clickables: {
