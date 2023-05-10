@@ -10055,6 +10055,7 @@ addLayer("omega", { //HALVEDLOL
 			unlocked: false,
 			points: new Decimal(0),
 			auto: false,
+			first: 0,
 		}}
 })
 
@@ -10067,6 +10068,7 @@ addLayer("paradox", { //HALVEDLOL
 			paradoxPower: new Decimal(0),
 			paradoxDead: new Decimal(0),
 			didyagetit: new Decimal(0),
+			first: 0,
 			auto: false,
 		}},
         name: "paradox", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -10284,6 +10286,7 @@ addLayer("ng/", { //HALVEDLOL
             unlocked: true,
 			DEEZNUTS: new Decimal(0),
 			thoseAchievements: new Decimal(0),
+			first: 0,
         }},
         color: "gray",
         row: "side",
@@ -10451,7 +10454,8 @@ addLayer("shenanigans", { //HALVEDLOL
             unlocked: false,
 			bingoRow: new Decimal(1),
 			ShenanigansChaosAntiBalancers: new Decimal(0),
-			refund: new Decimal(0)
+			refund: new Decimal(0),
+			first: 0,
         }},
         color: "#791C29",
         row: 999,
