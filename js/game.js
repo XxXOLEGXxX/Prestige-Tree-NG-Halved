@@ -328,7 +328,6 @@ function gameLoop(diff) {
 		diff = 0
 		player.tab = "gameEnded"
 	}
-	if (player.devSpeed) diff *= player.devSpeed
 
 	let limit = maxTickLength()
 	if(diff > limit)

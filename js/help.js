@@ -91,4 +91,23 @@ let help_data = {
 		text: "Once you unlock Civilizations, get Civilization Power and begin pushing. You'll also be able to get more AI Nodes here, which you should do in the order: AD -> BD/DB -> CD -> DD -> DA -> DC. As for Population, you should put it into Civs 5, 4, & 3 first, then deal with the earlier ones (but doing this other ways won't punish you all that greatly). Keep going for more Row 7 stuff, and make sure that your new Row 6 layers (Robots & Ideas) are fully automated at this point.<br><br>Go for more and more points, achievements, and progress altogether. If you feel stuck, remember to adjust your AI & civ builds, and check if anything isn't automated or bought that can be. Otherwise, this push towards the current endgame should be fairly straightforward.",
 		unlocked() { return player.c.unlocked },
 	},
+	omega: {
+		id: "omega",
+		title: "0th Omega Layer",
+		text: "Do resets, buy Prestige Upgrades, and let your Points grow. There really isn't much to this phase of the game.",
+		unlocked() { return player.omega.points.gte(0) },
+	},
+	omega1: {
+		id: "omega1",
+		title: "1st Omega Layer",
+		text: "Do resets, buy Prestige Upgrades, and let your Points grow. There really isn't much to this phase of the game.",
+		unlocked() { return player.omega.points.gte(1) },
+	},
+	omega2: {
+		id: "omega2",
+		title: "2nd Omega Layer",
+		text: "Do resets, buy Prestige Upgrades, and let your Points grow. There really isn't much to this phase of the game.",
+		unlocked() { return player.omega.points.gte(2) },
+	},
+	
 }

@@ -40,6 +40,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0.5) //HALVEDLOL
+	if (hasMilestone("omega", 0)) gain = gain.times(2)
+	if (player.paradox.unlocked) gain = gain.times(tmp.paradox.effectPow)
+	if (hasUpgrade("paradox", 13)) gain = gain.times(tmp.paradox.effect2)
+	if (hasUpgrade("paradox", 14)) gain = gain.times(new Decimal(308.25471555991675).mul(tmp.t.enEff))
 	if (hasUpgrade("p", 12)) gain = gain.times(upgradeEffect("p", 12)); //HALVEDLOL
 	if (hasUpgrade("p", 13)) gain = gain.times(upgradeEffect("p", 13)); //HALVEDLOL
 	if (hasUpgrade("p", 22)) gain = gain.times(upgradeEffect("p", 22)); //HALVEDLOL
@@ -47,6 +51,7 @@ function getPointGen() {
 	if (((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes("e"):false) && hasUpgrade("e", 12)) gain = gain.times(upgradeEffect("e", 12))
 	if (hasAchievement("a", 21)) gain = gain.times(1.05); //HALVEDLOL
 	if (hasAchievement("a", 31)) gain = gain.times(1.5); //HALVEDLOL
+	if (player.shenanigans.unlocked) gain = gain.times(tmp.shenanigans.buyables[11].effect)
 	if (inChallenge("h", 22)) return gain.times(player.s.unlocked?buyableEffect("s", 11):1).root(inChallenge("h", 31)?tmp.h.pointRoot31:1);
 	
 	if (player.b.unlocked) gain = gain.times(tmp.b.effect);
@@ -59,6 +64,7 @@ function getPointGen() {
 	if (inChallenge("h", 31)) gain = gain.root(tmp.h.pointRoot31);
 	if (hasUpgrade("ss", 43)) gain = gain.pow(gain.lt(tmp.ss.upgrades[43].endpoint)?1.05:1.005); //HALVEDLOL
 	if (hasUpgrade("hn", 31)) gain = gain.pow(1.025); //HALVEDLOL
+	if (gain > 1) gain = gain.pow(tmp.omega.effect)
 	return gain
 }
 
@@ -68,12 +74,29 @@ function getRow1to6Speed() {
 	return speed;
 }
 
+function shenanigansBingo() {
+	let BINGO = new Decimal(0)
+	if(hasAchievement("ng/", 11, 12, 13, 14, 15, 16)) BINGO = BINGO.add(1)
+	if(hasAchievement("ng/", 21, 22, 23, 24, 25, 26)) BINGO = BINGO.add(1)
+	return BINGO
+}
+
+function unlockedLayers() {
+	let count = new Decimal(0)
+	let id = ["p", "b", "g", "t", "e", "s", "sb", "sg", "h", "q", "o", "ss", "m", "ba", "ps", "hn", "n", "hs", "i", "ma", "ge", "mc", "en", "ne", "id", "r", "ai", "c"]
+	for (let i = 0; i < 27; i++) {
+		if(player[id[i]].unlocked) count = count.add(1)
+	}
+	return count
+}
+
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
 }}
 
 // Display extra things at the top of the page
 var displayThings = [
+	function() { return player.devSpeed>1?"Actual points/s: "+format(getPointGen().mul(Decimal.mul(player.devSpeed, 1)))+"/s":"" }
 ]
 
 // Determines when the game "ends"
