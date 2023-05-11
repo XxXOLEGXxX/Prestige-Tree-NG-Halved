@@ -1927,7 +1927,7 @@ addLayer("s", { //HALVEDLOL
 				title: "Primary Space Building",
 				costExp() { //HALVEDLOL
 					let exp = 1.35;
-					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id.div(2)));
+					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id/2));
 					return exp;
 				},
 				cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
@@ -1981,7 +1981,7 @@ addLayer("s", { //HALVEDLOL
 				title: "Secondary Space Building",
 				costExp() { //HALVEDLOL
 					let exp = 1.35;
-					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id.div(2)));
+					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id/2));
 					return exp;
 				},
 				cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
@@ -2034,7 +2034,7 @@ addLayer("s", { //HALVEDLOL
 				title: "Tertiary Space Building",
 				costExp() { //HALVEDLOL
 					let exp = 1.35;
-					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id.div(2)));
+					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id/2));
 					return exp;
 				},
 				cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
@@ -2088,7 +2088,7 @@ addLayer("s", { //HALVEDLOL
 				title: "Quaternary Space Building",
 				costExp() { //HALVEDLOL
 					let exp = 1.35;
-					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id.div(2)))
+					if (hasUpgrade("s", 31) && player.i.buyables[12].gte(5)) exp -= 0.02*(12.5-(this.id/2))
 					return exp;
 				},
 				cost(x=player[this.layer].buyables[this.id]) { // cost for buying xth buyable, can be an object if there are multiple currencies
@@ -9978,10 +9978,10 @@ addLayer("omega", { //HALVEDLOL
         symbol: "O", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         color: "gray",
-        requires() { return [102,14,("1e2390"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
+        requires() { return [102,28,("1e2390"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
         resource() { return player.omega.points>1?"Omega Levels":"Omega Level" }, // Name of prestige currency
-        baseResource() { return ["points", "boosters and generators", "points", "FUCK YOU"][player.omega.points||0] }, // Name of resource prestige is based on
-        baseAmount() { return [player.points, player.b.points && player.g.points, player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
+        baseResource() { return ["points", "boosters and generators", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
+        baseAmount() { return [player.points, player.b.points.add(player.g.points), player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
         type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         exponent() { return 1 }, // Prestige currency exponent
 		base() { return 1 },
