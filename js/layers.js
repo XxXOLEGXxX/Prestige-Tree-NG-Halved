@@ -10344,8 +10344,8 @@ addLayer("ng/", { //HALVEDLOL
             15: {
                 name: "Generator wasn't that good in all honesty",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.b.unlocked && player.g.unlocked && tmp.b.effect.mag >= (tmp.g.powerEff.mag*tmp.g.powerEff.mag) && player.g.points >= 2 && player.p.time.gte(60) },
-                tooltip: "Reach Booster's Effect^2 > Generator Power's Effect 60 seconds after reset while having at least 2 generators. Reward: Generators are 16.667% stronger",
+                done() { return player.b.unlocked && player.g.unlocked && (tmp.b.effect >= (tmp.g.powerEff.pow(2))) && player.g.points >= 2 && player.p.time.gte(60) },
+                tooltip: "Reach (Booster's Effect > Generator Power's Effect^2) 60 seconds after reset while having at least 2 generators. Reward: Generators are 16.667% stronger",
 				image: "images/achs2/15.png",
             },
             16: {
@@ -10414,8 +10414,8 @@ addLayer("ng/", { //HALVEDLOL
             33: {
                 name: "I hate my job",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.b.unlocked && player.g.points >= 4 && player.g.unlocked && tmp.b.effect.mag >= (tmp.g.effect.pow(19)) && player.p.time.gte(60) },
-                tooltip: "Reach Booster's Effect^19 > Generator's Effect 60 seconds after resetat least 4 generators. Reward: Generator Power's effect is 19% stronger",
+                done() { return player.b.unlocked && player.g.points >= 4 && player.g.unlocked && (tmp.b.effect >= (tmp.g.effect.pow(19))) && player.p.time.gte(60) },
+                tooltip: "Reach (Booster's Effect > Generator's Effect^19) 60 seconds after reset while having at least 4 generators. Reward: Generator Power's effect is 19% stronger",
 				image: "images/achs2/33.png",
             },
 			111: {
