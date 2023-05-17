@@ -118,6 +118,7 @@ function startPlayerBase() {
 		hasNaN: false,
 		hideChallenges: false,
 		tapNerd: false,
+		ShowNGLayers: false,
 		anim: true,
 		grad: true,
 		milNotify: true,

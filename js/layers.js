@@ -616,7 +616,9 @@ addLayer("g", { //HALVEDLOL
 			if (hasUpgrade("s", 12)) eff = eff.times(upgradeEffect("s", 12));
 			if (hasUpgrade("s", 13)) eff = eff.times(upgradeEffect("s", 13));
 			if (player.q.unlocked) eff = eff.times(tmp.q.enEff);
+			if (hasUpgrade("paradox", 22)) eff = eff.times(upgradeEffect("paradox", 22))
 			if (hasAchievement("ng/", 26)) eff = eff.times(1e20)
+			if (hasUpgrade("paradox", 23)) eff = eff.pow(1.5)
 			return eff;
 		},
 		effectDescription() {
@@ -893,7 +895,7 @@ addLayer("g", { //HALVEDLOL
 			},
 			35: { //HALVEDLOL
 				title: "Into The Future",
-				description: "Nebula Energy, Honour, and Hyperspace Energy gains are boosted by Generator Power.",
+				description: "Nebula Energy, Honour, and Hyperspace Energy gains are boosted by Generator Power. Reward: Check Paradox layer.",
 				cost() { return new Decimal(((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?"1e47540":"e4.4e7") },
 				currencyDisplayName: "generator power",
                 currencyInternalName: "power",
@@ -1237,6 +1239,7 @@ addLayer("t", { //HALVEDLOL
 			if (hasUpgrade("t", 12)) free = free.plus(0.5); //HALVEDLOL
 			if (hasUpgrade("t", 24)) free = free.plus(tmp.t.enEff2);
 			if (hasUpgrade("q", 22)) free = free.plus(upgradeEffect("q", 22));
+			free = free.times(tmp.shenanigans.buyables[32].effect)
 			return free;
 		},
 		buyables: {
@@ -1367,6 +1370,7 @@ addLayer("e", { //HALVEDLOL
 			if (hasUpgrade("e", 23)) enh = enh.plus(upgradeEffect("e", 23)); //HALVEDLOL
 			if (hasUpgrade("q", 22)) enh = enh.plus(upgradeEffect("q", 22));
 			if (hasUpgrade("e", 32) && player.i.buyables[12].gte(3)) enh = enh.plus(upgradeEffect("e", 32));
+			enh = enh.times(tmp.shenanigans.buyables[33].effect)
 			return enh;
 		},
         layerShown(){return player.b.unlocked&&player.g.unlocked},
@@ -1644,6 +1648,7 @@ addLayer("s", { //HALVEDLOL
 			if (hasUpgrade("s", 13)) space = space.plus(1); //HALVEDLOL
 			if (hasAchievement("a", 53)) space = space.plus(1); //HALVEDLOL
 			if (player.ss.unlocked) space = space.plus(tmp.ss.eff1);
+			space = space.times(tmp.shenanigans.buyables[34].effect)
 			
 			if (inChallenge("h", 21)) space = space.div(10);
 			return space.floor().sub(player.s.spent).max(0);
@@ -1695,6 +1700,7 @@ addLayer("s", { //HALVEDLOL
 			if (hasUpgrade("s", 22)) x = x.plus(upgradeEffect("s", 22));
 			if (hasUpgrade("q", 22)) x = x.plus(upgradeEffect("q", 22));
 			if (hasUpgrade("ss", 31)) x = x.plus(upgradeEffect("ss", 31));
+			x = x.times(tmp.shenanigans.buyables[34].effect)
 			return x;
 		},
 		freeSpaceBuildings1to4() {
@@ -2514,6 +2520,7 @@ addLayer("sb", { //HALVEDLOL
 			if (((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes("h"):false) && hasChallenge("h", 12)) base = base.times(player.hs.points.div(2).plus(1)); //HALVEDLOL
 			if (player.en.unlocked) base = base.pow(tmp.en.swEff);
 			if (player.c.unlocked && tmp.c) base = base.pow(tmp.c.eff5);
+			base = base.times(tmp.shenanigans.buyables[31].effect)
 			return base
 		},
 		effect() { //HALVEDLOL
@@ -2591,6 +2598,7 @@ addLayer("sg", { //HALVEDLOL
 			if (player.mc.unlocked) base = base.times(clickableEffect("mc", 21));
 			if (tmp.m.buyables[16].unlocked) base = base.times(buyableEffect("m", 16));
 			if (player.ne.unlocked) base = base.times(tmp.ne.thoughtEff2);
+			base = base.times(tmp.shenanigans.buyables[35].effect)
 			return base;
 		},
 		effect() { //HALVEDLOL
@@ -2992,6 +3000,9 @@ addLayer("q", { //HALVEDLOL
 			if (hasUpgrade("q", 21)) mult = mult.times(upgradeEffect("q", 21));
 			if (player.o.unlocked) mult = mult.times(buyableEffect("o", 12));
 			if (player.ba.unlocked) mult = mult.times(tmp.ba.negBuff);
+			if (hasAchievement("ng/", 36)) mult = mult.times(1.5)
+			if (hasMilestone("omega", 3)) mult = mult.times(tmp.paradox.effect.root(2))
+			if (hasAchievement("ng/", 44)) mult = mult.times(tmp.shenanigans.buyables[81].effect)
 			return mult;
 		},
 		enGainExp() { //HALVEDLOL
@@ -3966,11 +3977,14 @@ addLayer("ss", { //HALVEDLOL
 			return base;
 		},
 		effect() {  //HALVEDLOL
+			let lol = new Decimal(2)
+			if (hasAchievement("ng/", 45)) lol = lol.sub(1)
 			if (!unl(this.layer)) return new Decimal(1);
-			let gain = Decimal.pow(tmp.ss.effBase.div(2), player.ss.points.div(2)).sub(1);
+			let gain = Decimal.pow(tmp.ss.effBase.div(lol), player.ss.points.div(2)).sub(1);
 			if (hasUpgrade("ss", 13)) gain = gain.times(upgradeEffect("ss", 13));
 			if (player.o.unlocked) gain = gain.times(buyableEffect("o", 13));
 			if (player.m.unlocked) gain = gain.times(tmp.m.hexEff);
+			if (hasAchievement("ng/", 42) && !hasAchievement("ng/", 45)) gain = gain.add(1)
 			return gain;
 		},
 		autoPrestige() { return player.ss.auto && hasMilestone("ba", 2) && player.ma.current!="ss" },
@@ -9975,13 +9989,13 @@ addNode("node paradox", {
 
 addLayer("omega", { //HALVEDLOL
         name: "omega", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "O", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        symbol: "Ω", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         color: "gray",
-        requires() { return [102,28,("1e2390"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
+        requires() { return [102,28,("1e2390"),("1e29000"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
         resource() { return player.omega.points>1?"Omega Levels":"Omega Level" }, // Name of prestige currency
-        baseResource() { return ["points", "boosters and generators", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
-        baseAmount() { return [player.points, player.b.points.add(player.g.points), player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
+        baseResource() { return ["points", "boosters and generators", "points", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
+        baseAmount() { return [player.points, player.b.points.add(player.g.points), player.points, player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
         type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         exponent() { return 1 }, // Prestige currency exponent
 		base() { return 1 },
@@ -9991,7 +10005,7 @@ addLayer("omega", { //HALVEDLOL
 		},
 		canBuyMax() { return false },
         row: 999,
-        layerShown(){return false},
+        layerShown(){return player.ShowNGLayers},
 		automate() {},
 		effect() { //HALVEDLOL
 			let eff = player.omega.points.div(6)
@@ -10026,6 +10040,12 @@ addLayer("omega", { //HALVEDLOL
 				effectDescription: "I hate Space layer:<br>Omega Levels affect Row 3 layers.<br>Quinary Space building gets 125 free levels.",
 				unlocked() { return  player.omega.points >= 2 },
 			},
+			3: {
+				requirementDescription: "4th Omega Level",
+				done() { return player.omega.points >= 4 },
+				effectDescription(){ return "I hate Space layer:<br>Paradoxes boost point gain by x"+format(new Decimal(10).pow(tmp.paradox.effect.root(2)))+"<br>Global Speed is applied on Quirk Layers twice"},
+				unlocked() { return  player.omega.points >= 3 },
+			},
 		},
 		doReset(resettingLayer) {
 			player.b.unlockOrder = 0
@@ -10050,6 +10070,22 @@ addLayer("omega", { //HALVEDLOL
 			player.hs.unlocked = false
 			player.n.unlockOrder = 0
 			player.n.unlocked = false
+			player.sb.unlocked = false
+			player.sg.unlocked = false
+			player.h.unlocked = false
+			player.q.unlocked = false
+			player.m.unlocked = false
+			player.ba.unlocked = false
+			player.ps.unlocked = false
+			player.hn.unlocked = false
+			player.ma.unlocked = false
+			player.i.unlocked = false
+			player.ge.unlocked = false
+			player.mc.unlocked = false
+			player.id.unlocked = false
+			player.r.unlocked = false
+			player.ai.unlocked = false
+			player.c.unlocked = false
 		},
 		startData() { return {
 			unlocked: false,
@@ -10072,8 +10108,8 @@ addLayer("paradox", { //HALVEDLOL
 			auto: false,
 		}},
         name: "paradox", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "O", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        symbol: "⨔", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         color: "pink",
         requires() { return new Decimal(60000) }, // Can be a function that takes requirement increases into account
         resource() {return player.paradox.points.gt(1)?"paradoxes":"paradox"}, // Name of prestige currency
@@ -10087,7 +10123,7 @@ addLayer("paradox", { //HALVEDLOL
 		},
 		canBuyMax() { return false },
         row: 999,
-        layerShown(){return false},
+        layerShown(){return player.ShowNGLayers && hasAchievement("ng/", 13)},
 		automate() {},
 		effect() { //HALVEDLOL
 			return Decimal.pow(player.paradox.points.add(1).max(0), 2).log(3).add(1).pow(2)
@@ -10254,6 +10290,36 @@ addLayer("paradox", { //HALVEDLOL
 					currencyDisplayName: "Dissolved Drained Distortions",
 					currencyLayer: "paradox",
 				},
+				22: {
+					title: "The Root Of All Points",
+					description: "Booster's effect boost Generator Power's generation.",
+					effect() { return tmp.b.effect.root(10); },  
+					effectDisplay() { return "x"+format(this.effect()) },
+					formula() { return "yroot10(x)" },
+					cost() { return new Decimal("1e5390") },
+					unlocked() { return hasAchievement("ng/", 35) },
+					currencyInternalName: "paradoxDead",
+					currencyDisplayName: "Dissolved Drained Distortions",
+					currencyLayer: "paradox",
+				},
+				23: {
+					title: "The Power To Fuel It All",
+					description: "Generator Power's generation is raised to the power of 1.5.",
+					cost() { return new Decimal("5e5967") },
+					unlocked() { return hasUpgrade("paradox", 22) },
+					currencyInternalName: "paradoxDead",
+					currencyDisplayName: "Dissolved Drained Distortions",
+					currencyLayer: "paradox",
+				},
+				24: {
+					title: "Hey dawg, I heard you like Prestige Tree... [WIP]",
+					description: "Unlock Hyper Prestige Points.",
+					cost() { return new Decimal("1e95000") },
+					unlocked() { return hasUpgrade("paradox", 22) },
+					currencyInternalName: "points",
+					currencyDisplayName: "points",
+					currencyLayer: "c",
+				},
 		},
 		doReset(resettingLayer) {
 			player.b.unlockOrder = 0
@@ -10278,6 +10344,22 @@ addLayer("paradox", { //HALVEDLOL
 			player.hs.unlocked = false
 			player.n.unlockOrder = 0
 			player.n.unlocked = false
+			player.sb.unlocked = false
+			player.sg.unlocked = false
+			player.h.unlocked = false
+			player.q.unlocked = false
+			player.m.unlocked = false
+			player.ba.unlocked = false
+			player.ps.unlocked = false
+			player.hn.unlocked = false
+			player.ma.unlocked = false
+			player.i.unlocked = false
+			player.ge.unlocked = false
+			player.mc.unlocked = false
+			player.id.unlocked = false
+			player.r.unlocked = false
+			player.ai.unlocked = false
+			player.c.unlocked = false
 		},
 })
 
@@ -10306,7 +10388,7 @@ addLayer("ng/", { //HALVEDLOL
 			},
 			"Achievements": {
 				content: [
-					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/15<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/3" } ], "blank", "blank", "achievements",
+					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/23<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
 				],
 			},
 		},
@@ -10418,6 +10500,62 @@ addLayer("ng/", { //HALVEDLOL
                 tooltip: "Reach (Booster's Effect > Generator's Effect^19) 60 seconds after reset while having at least 4 generators. Reward: Generator Power's effect is 19% stronger",
 				image: "images/achs2/33.png",
             },
+            34: {
+                name: "That's very suspiciously looking timewall",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.shenanigans.buyables[11] >= 1 && player.shenanigans.buyables[21] >= 1 && player.shenanigans.buyables[22] >= 1 && player.shenanigans.buyables[31] >= 1 && player.shenanigans.buyables[32] >= 1 && player.shenanigans.buyables[33] >= 1 && player.shenanigans.buyables[34] >= 1},
+                tooltip: "Buy 7 different SCAB buildings once. Reward: Unlocks very important SCAB building.",
+				image: "images/achs2/34.png",
+            },
+            35: {
+                name: "Short Lived Satisfaction",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.points.gte("1e6020") && inChallenge("h", 31) },
+                tooltip: 'Reach 1e6020 points in "Timeless".',
+				image: "images/achs2/35.png",
+			},
+            36: {
+                name: "The Best Year Award goes to...",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.h.points.gte("2e21") },
+                tooltip: 'Reach 2e21 hindrance spirits. Reward: Quirk Layers are 23% stronger.',
+				image: "images/achs2/36.png",
+			},
+			41: {
+                name: "You did it. You crazy son of a bitch, you did it!",
+                done() { return player.omega.points >= 4 },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 4th Omega Level.",
+				image: "images/achs2/41.png",
+            },
+			42: {
+                name: "POV: You broke the only available layer",
+                done() { return player.ss.unlocked },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Perform a Subspace reset. Compensation: You gain 1 subspace per second.",
+				image: "images/achs2/42.png",
+            },
+			43: {
+                name: "MR. BEEEEAST!!!!",
+                done() { return player.points.gte("1e65600") },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 1e65600 points. Reward: You gain more SCABs based on completed NG/ achievements. (so cool)",
+				image: "images/achs2/43.png",
+            },
+			44: {
+                name: "On The Verge of Breakdown",
+                done() { return new Decimal(tmp.q.resetGain).gte("6.4e64")},
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Accumulate enough Generator Powers to be able to get 6.4e64 quirks with a single Quirk reset. Reward: Shenanigious Chaotic Anti Balancer boosts Quirk Layers.",
+				image: "images/achs2/44.png",
+            },
+			45: {
+                name: 'WHAT DO YOU MEAN <b>"I fixed Subspace layer"</b>?!',
+                done() { return player.points.gte("1e77777") },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 1e77777 points. Reward: Fix Subspace layer's gain.",
+				image: "images/achs2/45.png",
+            },
 			111: {
                 name: "Zzzzzzzzz...",
                 done() { return player.g.points.eq(1) && player.b.unlocked == false && player.g.power.gte(1006) && hasAchievement("ng/", 13) == false  && player.omega.points.eq(0) },
@@ -10442,10 +10580,18 @@ addLayer("ng/", { //HALVEDLOL
 				unlocked() { return this.done() },
 				image: "images/achs2/s13.png",
             },
+			114: {
+                name: "STOP LOOKING AT LAYERS.JS<br><br><br><br><br>(please)",
+                done() { return (!hasUpgrade("paradox", 24)) && player.b.points == 0 && player.g.points == 0 && player.sb.points == 0 && player.t.points == 0 && player.s.points == 0 && player.sg.points == 0 && player.t.buyables[11] == 0 && player.e.buyables[11] == 0 && player.s.buyables[11] == 0 && player.s.buyables[12] == 0 && player.s.buyables[13] == 0 && player.s.buyables[14] == 0 && player.s.buyables[15] == 0 && player.b.upgrades == false && player.p.upgrades.length == 1 },
+				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
+                tooltip: 'Reach 1e6145 points in <b>"Timeless"</b> without most of Row 3 resources, 0 booster upgrades and "Begin" upgrade only.',
+				unlocked() { return this.done() },
+				image: "images/achs2/s14.png",
+            },
 		},
 		update(diff) {	// Added this section to call adjustNotificationTime every tick, to reduce notification timers
 			adjustNotificationTime(diff);
-		},	
+		},
     }, 
 )
 
@@ -10460,16 +10606,18 @@ addLayer("shenanigans", { //HALVEDLOL
         color: "#791C29",
         row: 999,
 		position: 0,
-		symbol: "NG/",
-        layerShown() {return false}, 
+		symbol: "₴",
+        layerShown() {return player.ShowNGLayers && hasAchievement("ng/", 32)}, 
         tooltip() { // Optional, tooltip displays when the layer is locked
-            return ("GOOD LUCK MAKING NG// FUCKER")
+            return ("GOOD LUCK MAKING NG//")
         },
 		effect() {
-			return shenanigansBingo()
+			let eff = shenanigansBingo()
+			if(player.shenanigans.buyables[81]>=1) eff = eff.times(tmp.shenanigans.buyables[81].effect)
+			return eff
 		},
 		update(diff) {
-			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(diff))
+			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(hasAchievement("ng/", 43)?new Decimal(player["ng/"].thoseAchievements).add(1):1).times(diff))
 		},
 		unlocked () {return false},
 		tabFormat: {
@@ -10477,7 +10625,7 @@ addLayer("shenanigans", { //HALVEDLOL
 				content: [
 					"blank", "blank", 
 					["display-text", function() { return player.shenanigans.unlocked?'<h1 style="color: #791C29;">"Greetings, <h1/><h1 style="color: #420420;">old friend<h1/><h1 style="color: #791C29;">."<h1/>':'<h3 style="color: #791C29;">"Come back when you reach 1e9048 points".<h3/>' }], "blank", ["infobox", "lore"], "blank",
-					["display-text", function() { return '<span style="color: #791C29">"Well goddamn bro, you got '+formatWhole(shenanigansBingo())+' BIG FUCKING BINGO ROWS... I know, sounds dumb. What DOES NOT sound as dumb is the fact you gain '+format(tmp.shenanigans.effect)+' SCABs per second. ('+format(tmp.shenanigans.effect.times(player.devSpeed))+'/s to be precise)<br>i have no idea what SCAB means either"<br><br>"oh yeah, almost forgot. You currently have '+format(player.shenanigans.ShenanigansChaosAntiBalancers)+' SCABs."</span>' }], "blank", "buyables"
+					["display-text", function() { return player.shenanigans.unlocked?'<span style="color: #791C29">"Well goddamn bro, you got '+formatWhole(shenanigansBingo())+' BIG FUCKING BINGO ROWS... I know, sounds dumb. What DOES NOT sound as dumb is the fact you gain '+format(tmp.shenanigans.effect)+' SCABs per second. ('+format(tmp.shenanigans.effect.times(player.devSpeed))+'/s to be precise)<br>i have no idea what SCAB means either"<br><br>"oh yeah, almost forgot. You currently have '+format(player.shenanigans.ShenanigansChaosAntiBalancers)+' SCABs.<br><br>"(also also you made '+format(Decimal.plus(player.shenanigans.ShenanigansChaosAntiBalancers, player.shenanigans.refund))+' SCABs in total)"</span>':'' }], "blank", "buyables"
 				],
 			},
 		},
@@ -10490,8 +10638,8 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 		},
 		buyables: { //HALVEDLOL
-			rows: 2,
-			cols: 2,
+			rows: 8,
+			cols: 6,
 			showRespec() { return player.shenanigans.unlocked },
             respec() { // Optional, reset things and give back your currency. Having this function makes a respec button appear
 				player[this.layer].ShenanigansChaosAntiBalancers = player[this.layer].ShenanigansChaosAntiBalancers.add(player[this.layer].refund)
@@ -10518,9 +10666,9 @@ addLayer("shenanigans", { //HALVEDLOL
 			21: {
 				cost() { return Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[21])) },
 				title() { return "Sacred Cinematic Amplifiers (Beta)" },
-				effect() { return new Decimal(1.5).pow(player.shenanigans.buyables[21]) },
+				effect() { return new Decimal(1.5).pow(new Decimal(player.shenanigans.buyables[21]).times(tmp.shenanigans.buyables[31].effect)) },
 				display() { // Everything else displayed in the buyable button after the title
-                    return (tmp.nerdMode?("Cost Formula: 400*(12^x)"):("Cost: "+format(tmp.shenanigans.buyables[21].cost)+" "+(tmp.shenanigans.buyables[21].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[21])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Booster's base by x"+format(tmp.shenanigans.buyables[21].effect)))
+                    return (tmp.nerdMode?("Cost Formula: 400*(12^x)"):("Cost: "+format(tmp.shenanigans.buyables[21].cost)+" "+(tmp.shenanigans.buyables[21].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(new Decimal(player.shenanigans.buyables[21]).times(tmp.shenanigans.buyables[31].effect))+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Booster's base by x"+format(tmp.shenanigans.buyables[21].effect)))
                 },
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[21].cost) },
@@ -10534,9 +10682,9 @@ addLayer("shenanigans", { //HALVEDLOL
 			22: {
 				cost() { return Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[22])) },
 				title() { return "Smelly Crucial" },
-				effect() { return new Decimal(1.5).pow(player.shenanigans.buyables[22]) },
+				effect() { return new Decimal(1.5).pow(new Decimal(player.shenanigans.buyables[22]).times(tmp.shenanigans.buyables[35].effect)) },
 				display() { // Everything else displayed in the buyable button after the title
-                    return (tmp.nerdMode?("Cost Formula: 400*(12^x)"):("Cost: "+format(tmp.shenanigans.buyables[22].cost)+" "+(tmp.shenanigans.buyables[22].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[22])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Generator's base by x"+format(tmp.shenanigans.buyables[22].effect)))
+                    return (tmp.nerdMode?("Cost Formula: 400*(12^x)"):("Cost: "+format(tmp.shenanigans.buyables[22].cost)+" "+(tmp.shenanigans.buyables[22].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(new Decimal(player.shenanigans.buyables[22]).times(tmp.shenanigans.buyables[35].effect))+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Generator's base by x"+format(tmp.shenanigans.buyables[22].effect)))
                 },
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[22].cost) },
@@ -10544,6 +10692,102 @@ addLayer("shenanigans", { //HALVEDLOL
                     player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[22].cost);
 					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[22].cost);
 					player.shenanigans.buyables[22] = player.shenanigans.buyables[22].plus(1);
+				},
+				autoed() { return false },
+			},
+			31: {
+				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[31])) },
+				title() { return "SCAB Super Boosters (lol) WIP" },
+				effect() { return new Decimal(1).add(player.shenanigans.buyables[31]/2) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 160000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[31].cost)+" "+(tmp.shenanigans.buyables[31].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[31])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Super Booster's base and SCAB Boosters by x"+format(tmp.shenanigans.buyables[31].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[31].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[31].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[31].cost);
+					player.shenanigans.buyables[31] = player.shenanigans.buyables[31].plus(1);
+				},
+				autoed() { return false },
+			},
+			32: {
+				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[32])) },
+				title() { return "SCAB Time WIP" },
+				effect() { return new Decimal(1).add(player.shenanigans.buyables[32]/2) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 130000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[32].cost)+" "+(tmp.shenanigans.buyables[32].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[32])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases Extra Time Capsules by x"+format(tmp.shenanigans.buyables[32].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[32].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[32].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[32].cost);
+					player.shenanigans.buyables[32] = player.shenanigans.buyables[32].plus(1);
+				},
+				autoed() { return false },
+			},
+			33: {
+				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[33])) },
+				title() { return "SCAB Enhancer WIP" },
+				effect() { return new Decimal(1).add(player.shenanigans.buyables[33]/2) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 130000*(17^x)"):("Cost: "+format(tmp.shenanigans.buyables[33].cost)+" "+(tmp.shenanigans.buyables[33].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[33])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases free Enhancers by x"+format(tmp.shenanigans.buyables[33].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[33].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[33].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[33].cost);
+					player.shenanigans.buyables[33] = player.shenanigans.buyables[33].plus(1);
+				},
+				autoed() { return false },
+			},
+			34: {
+				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[34])) },
+				title() { return "SCAB Space WIP" },
+				effect() { return new Decimal(1).add(player.shenanigans.buyables[34]/2) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 130000*(17^x)"):("Cost: "+format(tmp.shenanigans.buyables[34].cost)+" "+(tmp.shenanigans.buyables[34].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[34])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases free space amount and free space building levels by x"+format(tmp.shenanigans.buyables[34].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[34].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[34].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[34].cost);
+					player.shenanigans.buyables[34] = player.shenanigans.buyables[34].plus(1);
+				},
+				autoed() { return false },
+			},
+			35: {
+				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[35])) },
+				title() { return "SCAB Super Generators (i hate you) WIP" },
+				effect() { return new Decimal(1).add(player.shenanigans.buyables[35]/2) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 160000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[35].cost)+" "+(tmp.shenanigans.buyables[35].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[35])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Super Generator's base and SCAB Generators by x"+format(tmp.shenanigans.buyables[35].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[35].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[35].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[35].cost);
+					player.shenanigans.buyables[35] = player.shenanigans.buyables[35].plus(1);
+				},
+				autoed() { return false },
+			},
+			81: {
+				cost() { return Decimal.pow(10, Decimal.plus(player.shenanigans.buyables[81], 0).mul(Decimal.plus(player.shenanigans.buyables[81], 0))) },
+				title() { return "Shenanigious Chaotic Anti Balancer" },
+				effect() { return new Decimal(60).pow(player.shenanigans.buyables[81]) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return (tmp.nerdMode?("Cost Formula: 10^((x)*(x))"):("Cost: "+format(tmp.shenanigans.buyables[81].cost)+" "+(tmp.shenanigans.buyables[81].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[81])+"<br>"+(tmp.nerdMode?("Formula: 60^x"):("Boosts SCABs gain by x"+format(tmp.shenanigans.buyables[81].effect)))
+                },
+                unlocked() { return player.shenanigans.unlocked && hasAchievement("ng/", 34) }, 
+                canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[81].cost) },
+                buy() { 
+                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[81].cost);
+					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[81].cost);
+					player.shenanigans.buyables[81] = player.shenanigans.buyables[81].plus(1);
 				},
 				autoed() { return false },
 			},

@@ -41,6 +41,7 @@ function getPointGen() {
 
 	let gain = new Decimal(0.5) //HALVEDLOL
 	if (hasMilestone("omega", 0)) gain = gain.times(2)
+	if (hasMilestone("omega", 3)) gain = gain.times(new Decimal(10).pow(tmp.paradox.effect.root(2)))
 	if (player.paradox.unlocked) gain = gain.times(tmp.paradox.effectPow)
 	if (hasUpgrade("paradox", 13)) gain = gain.times(tmp.paradox.effect2)
 	if (hasUpgrade("paradox", 14)) gain = gain.times(new Decimal(308.25471555991675).mul(tmp.t.enEff))
@@ -78,6 +79,7 @@ function shenanigansBingo() {
 	let BINGO = new Decimal(0)
 	if(hasAchievement("ng/", 11, 12, 13, 14, 15, 16)) BINGO = BINGO.add(1)
 	if(hasAchievement("ng/", 21, 22, 23, 24, 25, 26)) BINGO = BINGO.add(1)
+	if(hasAchievement("ng/", 31, 32, 33, 34, 35, 36)) BINGO = BINGO.add(1)
 	return BINGO
 }
 
