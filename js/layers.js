@@ -10681,7 +10681,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			22: {
 				cost() { return Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[22])) },
-				title() { return "Smelly Crucial" },
+				title() { return "Smelly Crucial Agile Barrels" },
 				effect() { return new Decimal(1.5).pow(new Decimal(player.shenanigans.buyables[22]).times(tmp.shenanigans.buyables[35].effect)) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 400*(12^x)"):("Cost: "+format(tmp.shenanigans.buyables[22].cost)+" "+(tmp.shenanigans.buyables[22].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(new Decimal(player.shenanigans.buyables[22]).times(tmp.shenanigans.buyables[35].effect))+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Generator's base by x"+format(tmp.shenanigans.buyables[22].effect)))
@@ -10697,7 +10697,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			31: {
 				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[31])) },
-				title() { return "SCAB Super Boosters (lol) WIP" },
+				title() { return "Supreme SCAB" },
 				effect() { return new Decimal(1).add(player.shenanigans.buyables[31]/2) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 160000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[31].cost)+" "+(tmp.shenanigans.buyables[31].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[31])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Super Booster's base and SCAB Boosters by x"+format(tmp.shenanigans.buyables[31].effect)))
@@ -10713,7 +10713,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			32: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[32])) },
-				title() { return "SCAB Time WIP" },
+				title() { return "Schrodinger's Cat's Ambigious Burst" },
 				effect() { return new Decimal(1).add(player.shenanigans.buyables[32]/2) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 130000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[32].cost)+" "+(tmp.shenanigans.buyables[32].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[32])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases Extra Time Capsules by x"+format(tmp.shenanigans.buyables[32].effect)))
@@ -10729,7 +10729,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			33: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[33])) },
-				title() { return "SCAB Enhancer WIP" },
+				title() { return "Spaghetti's & Cheese's Appealing Balls" },
 				effect() { return new Decimal(1).add(player.shenanigans.buyables[33]/2) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 130000*(17^x)"):("Cost: "+format(tmp.shenanigans.buyables[33].cost)+" "+(tmp.shenanigans.buyables[33].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[33])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases free Enhancers by x"+format(tmp.shenanigans.buyables[33].effect)))
@@ -10745,7 +10745,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			34: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[34])) },
-				title() { return "SCAB Space WIP" },
+				title() { return "Spacial Concentrated Alternate Batteries" },
 				effect() { return new Decimal(1).add(player.shenanigans.buyables[34]/2) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 130000*(17^x)"):("Cost: "+format(tmp.shenanigans.buyables[34].cost)+" "+(tmp.shenanigans.buyables[34].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[34])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Increases free space amount and free space building levels by x"+format(tmp.shenanigans.buyables[34].effect)))
@@ -10761,7 +10761,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 			35: {
 				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[35])) },
-				title() { return "SCAB Super Generators (i hate you) WIP" },
+				title() { return "Sacrilegious SCAB" },
 				effect() { return new Decimal(1).add(player.shenanigans.buyables[35]/2) },
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 160000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[35].cost)+" "+(tmp.shenanigans.buyables[35].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[35])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Super Generator's base and SCAB Generators by x"+format(tmp.shenanigans.buyables[35].effect)))
