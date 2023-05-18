@@ -1740,7 +1740,7 @@ addLayer("s", { //HALVEDLOL
 		},
 		autoPrestige() { return player.s.auto&&hasMilestone("q", 3)&&player.ma.current!="s" },
 		update(diff) {
-			if (player.s.autoBld && hasMilestone("q", 7)) for (let i=(5+player.i.buyables[11].toNumber());i>=1;i--) layers.s.buyables[10+i].buyMax();
+			if (player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43))) for (let i=(5+player.i.buyables[11].toNumber());i>=1;i--) layers.s.buyables[10+i].buyMax();
 		},
 		upgrades: {
 			rows: 3,
@@ -1981,7 +1981,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			12: { //HALVEDLOL
 				title: "Secondary Space Building",
@@ -2034,7 +2034,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			13: {  //HALVEDLOL
 				title: "Tertiary Space Building",
@@ -2088,7 +2088,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			14: { //HALVEDLOL
 				title: "Quaternary Space Building",
@@ -2145,7 +2145,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			15: { //HALVEDLOL
 				title: "Quinary Space Building",
@@ -2196,7 +2196,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			16: { //HALVEDLOL
 				title: "Senary Space Building",
@@ -2246,7 +2246,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			17: { //HALVEDLOL
 				title: "Septenary Space Building",
@@ -2296,7 +2296,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			18: { //HALVEDLOL
 				title: "Octonary Space Building",
@@ -2346,7 +2346,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			19: { //HALVEDLOL
 				title: "Nonary Space Building",
@@ -2396,7 +2396,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 			20: { //HALVEDLOL
 				title: "Decary Space Building",
@@ -2445,7 +2445,7 @@ addLayer("s", { //HALVEDLOL
                     player[this.layer].spent = player[this.layer].spent.sub(1).max(0);
 				},
 				canSellOne() { return hasMilestone("q", 5) },
-				autoed() { return player.s.autoBld && hasMilestone("q", 7) },
+				autoed() { return player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43)) },
 			},
 		},
 		milestones: {
@@ -2680,6 +2680,8 @@ addLayer("h", { //HALVEDLOL
         doReset(resettingLayer){ 
 			let keep = [];
 			player.q.time = new Decimal(0);
+			player.q.globalTime = new Decimal(0);
+			player.q.timeUpgrade = new Decimal(0);
 			player.q.energy = new Decimal(0);
 			player.h.chall31bought = 0;
 			if (hasMilestone("m", 1)) keep.push("challenges")
@@ -2958,6 +2960,8 @@ addLayer("q", { //HALVEDLOL
 			total: new Decimal(0),
 			energy: new Decimal(0),
 			time: new Decimal(0),
+			globalTime: new Decimal(0),
+			timeUpgrade: new Decimal(0),
 			auto: false,
 			first: 0,
 			pseudoUpgs: [],
@@ -2988,6 +2992,8 @@ addLayer("q", { //HALVEDLOL
         doReset(resettingLayer){ 
 			let keep = [];
 			player.q.time = new Decimal(0);
+			player.q.timeUpgrade = new Decimal(0);
+			player.q.globalTime = new Decimal(0);
 			player.q.energy = new Decimal(0);
 			if (hasMilestone("ba", 0)) keep.push("upgrades");
 			if (layers[resettingLayer].row > this.row) layerDataReset(this.layer, keep)
@@ -3002,7 +3008,7 @@ addLayer("q", { //HALVEDLOL
 			if (player.ba.unlocked) mult = mult.times(tmp.ba.negBuff);
 			if (hasAchievement("ng/", 36)) mult = mult.times(1.5)
 			if (hasMilestone("omega", 3)) mult = mult.times(tmp.paradox.effect.root(2))
-			if (hasAchievement("ng/", 44)) mult = mult.times(tmp.shenanigans.buyables[81].effect)
+			if (hasAchievement("ng/", 45)) mult = mult.times(tmp.shenanigans.buyables[81].effect)
 			return mult;
 		},
 		enGainExp() { //HALVEDLOL
@@ -3017,6 +3023,9 @@ addLayer("q", { //HALVEDLOL
 		},
 		update(diff) {
 			player.q.time = player.q.time.plus(diff);
+			player.q.timeUpgrade = player.q.timeUpgrade.plus(diff);
+			player.q.globalTime = player.q.globalTime.plus(diff.div(tmp.paradox.effect.root(2)))
+			if (hasUpgrade("paradox", 24) && player.q.globalTime.lte(3)) player.q.timeUpgrade = new Decimal(0)
 			if (tmp.q.enGainExp.gte(0)) player.q.energy = player.q.energy.plus(player.q.time.times(tmp.q.enGainMult).pow(tmp.q.enGainExp).times(diff));
 			if (hasMilestone("ba", 1) && player.q.auto && player.ma.current!="q") layers.q.buyables[11].buyMax();
 		},
@@ -3166,7 +3175,7 @@ addLayer("q", { //HALVEDLOL
 			11: { //HALVEDLOL
 				title: "Quirk Central",
 				description: "Total Quirks multiply each Quirk Layer's production (boosted by Quirk Upgrades bought).",
-				cost() { return player.q.time.plus(1).pow(1.2).times(100).pow(player.ma.current=="q"?this.id:1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(1.2).times(100).pow(player.ma.current=="q"?this.id:1) },
 				costFormula: "100*(time+1)^1.2",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3179,7 +3188,7 @@ addLayer("q", { //HALVEDLOL
 			12: { //HALVEDLOL
 				title: "Back To Row 2",
 				description: "Total Quirks multiply the Booster/Generator bases.",
-				cost() { return player.q.time.plus(1).pow(1.4).times(500).pow(player.ma.current=="q"?(Math.pow(this.id, this.id/10)*(this.id-10)):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(1.4).times(500).pow(player.ma.current=="q"?(Math.pow(this.id, this.id/10)*(this.id-10)):1) },
 				costFormula: "500*(time+1)^1.4",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3192,7 +3201,7 @@ addLayer("q", { //HALVEDLOL
 			13: { //HALVEDLOL
 				title: "Skip the Skip the Second",
 				description: "The Generator Power effect is raised to the power of 1.125.",
-				cost() { return player.q.time.div(2).plus(1).pow(1.4).times(375).pow(player.ma.current=="q"?(Math.pow(this.id, this.id/10)*(this.id-10)):1) },
+				cost() { return player.q.timeUpgrade.div(2).plus(1).pow(1.4).times(375).pow(player.ma.current=="q"?(Math.pow(this.id, this.id/10)*(this.id-10)):1) },
 				costFormula: "375*(time/2+1)^1.4",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3202,7 +3211,7 @@ addLayer("q", { //HALVEDLOL
 			14: { //HALVEDLOL
 				title: "Row 4 Synergy",
 				description: "Hindrance Spirit & Quirks boost each other's gain.",
-				cost() { return player.q.time.plus(1).pow(2.4).times(1e6).pow(player.ma.current=="q"?(this.id*6):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(2.4).times(1e6).pow(player.ma.current=="q"?(this.id*6):1) },
 				costFormula: "1e6*(time+1)^2.4",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3224,7 +3233,7 @@ addLayer("q", { //HALVEDLOL
 			15: { //HALVEDLOL
 				title: "Quirk Extension",
 				description: "Quirks make the Quirk Energy effect softcap start later.",
-				cost() { return Decimal.pow("e1e6", player.q.time.times(10).plus(1).log10().pow(2)).times("e1.5e7") },
+				cost() { return Decimal.pow("e1e6", player.q.timeUpgrade.times(10).plus(1).log10().pow(2)).times("e1.5e7") },
 				costFormula: "(e1,000,000^(log(time*10+1)^2))*e15,000,000",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3240,7 +3249,7 @@ addLayer("q", { //HALVEDLOL
 			21: { //HALVEDLOL
 				title: "Quirk City",
 				description: "Super Boosters multiply each Quirk Layer's production.",
-				cost() { return player.q.time.plus(1).pow(3.2).times(1e8).pow(player.ma.current=="q"?(this.id*1.5):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(3.2).times(1e8).pow(player.ma.current=="q"?(this.id*1.5):1) },
 				costFormula: "1e8*(time+1)^3.2",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3253,7 +3262,7 @@ addLayer("q", { //HALVEDLOL
 			22: { //HALVEDLOL
 				title: "Infinite Possibilities",
 				description: "Total Quirks provide free Extra Time Capsules, Enhancers, & Space Buildings.",
-				cost() { return player.q.time.plus(1).pow(4.2).times(2e11).pow(player.ma.current=="q"?(this.id*2):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(4.2).times(2e11).pow(player.ma.current=="q"?(this.id*2):1) },
 				costFormula: "2e11*(time+1)^4.2",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3266,7 +3275,7 @@ addLayer("q", { //HALVEDLOL
 			23: { //HALVEDLOL
 				title: "The Waiting Game",
 				description: "The Quirk Energy effect is squared.",
-				cost() { return player.q.time.plus(1).pow(5.4).times(5e19).pow(player.ma.current=="q"?this.id:1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(5.4).times(5e19).pow(player.ma.current=="q"?this.id:1) },
 				costFormula: "5e19*(time+1)^5.4",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3276,7 +3285,7 @@ addLayer("q", { //HALVEDLOL
 			24: { //HALVEDLOL
 				title: "Exponential Madness",
 				description: "The first Time Energy effect & the first Enhancer effect are raised ^4.25.",
-				cost() { return player.q.time.plus(1).pow(6.8).times(1e24).pow(player.ma.current=="q"?(this.id*1.95):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(6.8).times(1e24).pow(player.ma.current=="q"?(this.id*1.95):1) },
 				costFormula: "1e24*(time+1)^6.8",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3286,7 +3295,7 @@ addLayer("q", { //HALVEDLOL
 			25: { //HALVEDLOL
 				title: "Advanced Onion",
 				description: "Nebulaic Bricks reduce the Quirk Layer cost base.",
-				cost() { return Decimal.pow("e3e6", player.q.time.times(4).plus(1).log10().pow(2)).times("e2e7") },
+				cost() { return Decimal.pow("e3e6", player.q.timeUpgrade.times(4).plus(1).log10().pow(2)).times("e2e7") },
 				costFormula: "(e3,000,000^(log(time*4+1)^2))*e20,000,000",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3302,7 +3311,7 @@ addLayer("q", { //HALVEDLOL
 			31: { //HALVEDLOL
 				title: "Scale Softening",
 				description: "Post-12 scaling for static layers in rows 2-3 starts later based on your Quirk Layers.",
-				cost() { return player.q.time.plus(1).pow(8.4).times(1e48).pow(player.ma.current=="q"?(this.id/1.25):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(8.4).times(1e48).pow(player.ma.current=="q"?(this.id/1.25):1) },
 				costFormula: "1e48*(time+1)^8.4",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3315,7 +3324,7 @@ addLayer("q", { //HALVEDLOL
 			32: { //HALVEDLOL
 				title: "Quinary Superspace",
 				description: "The Quinary Space Building's effect is x1.5 as strong.",
-				cost() { return player.q.time.plus(1).pow(10).times(1e58).pow(player.ma.current=="q"?(this.id/1.6):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(10).times(1e58).pow(player.ma.current=="q"?(this.id/1.6):1) },
 				costFormula: "1e58*(time+1)^10",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3325,7 +3334,7 @@ addLayer("q", { //HALVEDLOL
 			33: { //HALVEDLOL
 				title: "Generated Progression",
 				description: "Unlock Super Generators.",
-				cost() { return player.q.time.plus(1).pow(12).times(1e81).pow(player.ma.current=="q"?(this.id/1.85):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(12).times(1e81).pow(player.ma.current=="q"?(this.id/1.85):1) },
 				costFormula: "1e81*(time+1)^12",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3335,7 +3344,7 @@ addLayer("q", { //HALVEDLOL
 			34: { //HALVEDLOL
 				title: "Booster Madness",
 				description: "Anything that adds to the Booster base also multiplies it at a reduced rate.",
-				cost() { return player.q.time.plus(1).pow(15).times(2.5e94).pow(player.ma.current=="q"?(this.id/1.85):1) },
+				cost() { return player.q.timeUpgrade.plus(1).pow(15).times(2.5e94).pow(player.ma.current=="q"?(this.id/1.85):1) },
 				costFormula: "2.5e94*(time+1)^15",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3348,7 +3357,7 @@ addLayer("q", { //HALVEDLOL
 			35: { //HALVEDLOL
 				title: "Millennial Abilities",
 				description: "Hyperspatial Bricks make Quirk Improvements scale slower.",
-				cost() { return Decimal.pow("e2e6", player.q.time.times(4).plus(1).log10().pow(3)).times("e3.5e7") },
+				cost() { return Decimal.pow("e2e6", player.q.timeUpgrade.times(4).plus(1).log10().pow(3)).times("e3.5e7") },
 				costFormula: "(e2,000,000^(log(time*4+1)^3))*e35,000,000",
 				currencyDisplayName: "quirk energy",
 				currencyInternalName: "energy",
@@ -3611,6 +3620,8 @@ addLayer("o", { //HALVEDLOL
         doReset(resettingLayer){ 
 			let keep = [];
 			player.q.time = new Decimal(0);
+			player.q.globalTime = new Decimal(0);
+			player.q.timeUpgrade = new Decimal(0);
 			player.q.energy = new Decimal(0);
 			if (layers[resettingLayer].row > this.row) layerDataReset(this.layer, keep)
         },
@@ -3978,13 +3989,13 @@ addLayer("ss", { //HALVEDLOL
 		},
 		effect() {  //HALVEDLOL
 			let lol = new Decimal(2)
-			if (hasAchievement("ng/", 45)) lol = lol.sub(1)
+			if (hasAchievement("ng/", 46)) lol = lol.sub(1)
 			if (!unl(this.layer)) return new Decimal(1);
 			let gain = Decimal.pow(tmp.ss.effBase.div(lol), player.ss.points.div(2)).sub(1);
 			if (hasUpgrade("ss", 13)) gain = gain.times(upgradeEffect("ss", 13));
 			if (player.o.unlocked) gain = gain.times(buyableEffect("o", 13));
 			if (player.m.unlocked) gain = gain.times(tmp.m.hexEff);
-			if (hasAchievement("ng/", 42) && !hasAchievement("ng/", 45)) gain = gain.add(1)
+			if (hasAchievement("ng/", 42) && !hasAchievement("ng/", 46)) gain = gain.add(1)
 			return gain;
 		},
 		autoPrestige() { return player.ss.auto && hasMilestone("ba", 2) && player.ma.current!="ss" },
@@ -9812,10 +9823,10 @@ addLayer("ab", { //HALVEDLOL
 		31: {
 			title: "Space Buildings",
 			display(){
-				return hasMilestone("q", 7)?(player.s.autoBld?"On":"Off"):"Locked"
+				return (hasMilestone("q", 7)||hasAchievement("ng/", 43))?(player.s.autoBld?"On":"Off"):"Locked"
 			},
-			unlocked() { return player.sg.unlocked },
-			canClick() { return hasMilestone("q", 7) },
+			unlocked() { return player.sg.unlocked||hasAchievement("ng/", 43) },
+			canClick() { return hasMilestone("q", 7)||hasAchievement("ng/", 43) },
 			onClick() { player.s.autoBld = !player.s.autoBld },
 			style: {"background-color"() { return player.s.autoBld?"#dfdfdf":"#666666" }},
 		},
@@ -9992,7 +10003,7 @@ addLayer("omega", { //HALVEDLOL
         symbol: "Ω", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         color: "gray",
-        requires() { return [102,28,("1e2390"),("1e29000"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
+        requires() { return [102,28,("1e2390"),("1e29750"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
         resource() { return player.omega.points>1?"Omega Levels":"Omega Level" }, // Name of prestige currency
         baseResource() { return ["points", "boosters and generators", "points", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
         baseAmount() { return [player.points, player.b.points.add(player.g.points), player.points, player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
@@ -10043,7 +10054,7 @@ addLayer("omega", { //HALVEDLOL
 			3: {
 				requirementDescription: "4th Omega Level",
 				done() { return player.omega.points >= 4 },
-				effectDescription(){ return "I hate Space layer:<br>Paradoxes boost point gain by x"+format(new Decimal(10).pow(tmp.paradox.effect.root(2)))+"<br>Global Speed is applied on Quirk Layers twice"},
+				effectDescription(){ return "Quirky Boost:<br>Paradoxes boost point gain by x"+format(new Decimal(10).pow(tmp.paradox.effect.root(2)))+"<br>Global Speed is applied on Quirk Layers twice"},
 				unlocked() { return  player.omega.points >= 3 },
 			},
 		},
@@ -10154,12 +10165,12 @@ addLayer("paradox", { //HALVEDLOL
 		},
 		tabFormat: ["main-display",
 			"prestige-button",
-			"blank",
+			"blank", "blank", "blank",
 			["row", ["column", ["buyable", 11], ["blank", "32px"], ["buyable", 12]]], "blank",
 				["display-text", function() {return "You will gain "+formatWhole(tmp.paradox.resetGain)+" Paradoxes on reset, boosting your Dev Speed by +x"+format(Decimal.pow(player.paradox.points.add(tmp.paradox.resetGain).add(1).max(0), 2).log(3).add(1).sub(tmp.paradox.effect.root(2)))}], "blank",
 				["display-text", function() {return hasAchievement("ng/", 13)?'You have ' + format(player.paradox.paradoxPower) + (tmp.paradox.effectPow.gte(308.25471555991675)?' (sorta capped)':'')+' Paradoxical Prestigious Particles, which boosts Point generation by '+format(tmp.paradox.effectPow)+"x "+(tmp.nerdMode?"(yroot9(n^3)+1)":"")+"<br>You also so happens to have "+format(player.paradox.paradoxDead)+" Dissolved Drained Distortions, "+(hasUpgrade("paradox", 13)?"which are boosting your point gain by "+format(tmp.paradox.effect2)+"x":"which, while they do nothing, serve as the main currency of Paradox layer."):""},],
 			"blank",
-			["buyable", 31], "blank", "blank", ["display-text", function() { return hasAchievement("ng/", 13)?"<h2>Speaking of currency...<h2/>":""}], "blank", "upgrades"],
+			["buyable", 31], "blank", ["buyable", 21], "blank", "blank", ["display-text", function() { return hasAchievement("ng/", 13)?"<h2>Speaking of currency...<h2/>":""}], "blank", "upgrades"],
 		buyables: { //HALVEDLOL
 			rows: 3,
 			cols: 2,
@@ -10178,7 +10189,7 @@ addLayer("paradox", { //HALVEDLOL
 					player.points = player.points.div(2)
 					player.paradox.storedPoints = player.paradox.storedPoints.add(halfPoints)
                 },
-                style: {'height':'100px', 'width':'175px'},
+                style: {'height':'75px', 'width':'175px'},
 				autoed() { return false },
 			},
 			12: {
@@ -10196,7 +10207,33 @@ addLayer("paradox", { //HALVEDLOL
 					player.p.points = player.p.points.div(2)
 					player.paradox.storedPrestigePoints = player.paradox.storedPrestigePoints.add(halfPoints)
                 },
-                style: {'height':'100px', 'width':'175px'},
+                style: {'height':'75px', 'width':'175px'},
+				autoed() { return false },
+			},
+			21: {
+				title() { return hasAchievement("ng/", 13)?"<h3>Collect 50% of points, prestige points and annihilate both.<h3/>":"Do Paradox Reset to unlock" },
+				effect() { return new Decimal(0) },
+				display() { // Everything else displayed in the buyable button after the title
+                    return hasAchievement("ng/", 13)?"<h4>You will gain "+format(tmp.paradox.buyables[21].gain)+" Paradoxical Prestigious Particles "+(tmp.nerdMode?"(yroot100(p^14xpp^16.5)-1)":"<h4/>"):"<h4/>"
+                },
+                unlocked() { return true }, 
+                canAfford() {
+					return hasAchievement("ng/", 13)
+				},
+				gain() {
+					let halfPoints = player.points.div(2)
+					let halfPrestigePoints = player.p.points.div(2)
+					let gain = halfPoints.pow(14).mul(halfPrestigePoints.pow(16.5)).root(100).sub(1).max(0)
+					if (hasAchievement("ng/", 25)) gain = gain.times(1e42)
+					return gain
+				},
+                buy() { 
+					player.points = player.points.div(2)
+					player.p.points = player.p.points.div(2)
+					player.paradox.paradoxPower = player.paradox.paradoxPower.add(tmp.paradox.buyables[21].gain)
+					player.paradox.didyagetit = tmp.paradox.buyables[21].gain
+                },
+                style: {'height':'125px', 'width':'350px'},
 				autoed() { return false },
 			},
 			31: {
@@ -10220,7 +10257,7 @@ addLayer("paradox", { //HALVEDLOL
 					player.paradox.storedPoints = new Decimal(0)
 					player.paradox.storedPrestigePoints = new Decimal(0)
                 },
-                style: {'height':'200px', 'width':'350px'},
+                style: {'height':'100px', 'width':'300px'},
 				autoed() { return false },
 			},
 		},
@@ -10296,7 +10333,7 @@ addLayer("paradox", { //HALVEDLOL
 					effect() { return tmp.b.effect.root(10); },  
 					effectDisplay() { return "x"+format(this.effect()) },
 					formula() { return "yroot10(x)" },
-					cost() { return new Decimal("1e5390") },
+					cost() { return new Decimal("1e5392") },
 					unlocked() { return hasAchievement("ng/", 35) },
 					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
@@ -10312,10 +10349,19 @@ addLayer("paradox", { //HALVEDLOL
 					currencyLayer: "paradox",
 				},
 				24: {
+					title: "Ready. Set. Inflate!",
+					description: "Quirk upgrades's scaling is delayed by 3 global second.",
+					cost() { return new Decimal("1e11400") },
+					unlocked() { return hasUpgrade("paradox", 23) },
+					currencyInternalName: "paradoxDead",
+					currencyDisplayName: "Dissolved Drained Distortions",
+					currencyLayer: "paradox",
+				},
+				25: {
 					title: "Hey dawg, I heard you like Prestige Tree... [WIP]",
 					description: "Unlock Hyper Prestige Points.",
-					cost() { return new Decimal("1e95000") },
-					unlocked() { return hasUpgrade("paradox", 22) },
+					cost() { return new Decimal("1e94500") },
+					unlocked() { return hasUpgrade("paradox", 24) },
 					currencyInternalName: "points",
 					currencyDisplayName: "points",
 					currencyLayer: "c",
@@ -10388,7 +10434,7 @@ addLayer("ng/", { //HALVEDLOL
 			},
 			"Achievements": {
 				content: [
-					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/23<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
+					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/24<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
 				],
 			},
 		},
@@ -10510,8 +10556,8 @@ addLayer("ng/", { //HALVEDLOL
             35: {
                 name: "Short Lived Satisfaction",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.points.gte("1e6020") && inChallenge("h", 31) },
-                tooltip: 'Reach 1e6020 points in "Timeless".',
+                done() { return player.points.gte("1e6015") && inChallenge("h", 31) && challengeCompletions("h", 31) >= 3 },
+                tooltip: 'Reach 1e6015 points in "Timeless" after 3 completions.',
 				image: "images/achs2/35.png",
 			},
             36: {
@@ -10532,29 +10578,36 @@ addLayer("ng/", { //HALVEDLOL
                 name: "POV: You broke the only available layer",
                 done() { return player.ss.unlocked },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Perform a Subspace reset. Compensation: You gain 1 subspace per second.",
+                tooltip: "Perform a Subspace reset. Compensation: You gain 1 subspace per second and you gain 10 space buildings each per second.",
 				image: "images/achs2/42.png",
             },
 			43: {
+                name: "Take A Break",
+                done() { return player.ss.points.gte(2) },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 2 Subspaces. Reward: Space Buildings are automated. (Check AB side layer)",
+				image: "images/achs2/43.png",
+            },
+			44: {
                 name: "MR. BEEEEAST!!!!",
                 done() { return player.points.gte("1e65600") },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 tooltip: "Reach 1e65600 points. Reward: You gain more SCABs based on completed NG/ achievements. (so cool)",
-				image: "images/achs2/43.png",
+				image: "images/achs2/44.png",
             },
-			44: {
+			45: {
                 name: "On The Verge of Breakdown",
                 done() { return new Decimal(tmp.q.resetGain).gte("6.4e64")},
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 tooltip: "Accumulate enough Generator Powers to be able to get 6.4e64 quirks with a single Quirk reset. Reward: Shenanigious Chaotic Anti Balancer boosts Quirk Layers.",
-				image: "images/achs2/44.png",
-            },
-			45: {
-                name: 'WHAT DO YOU MEAN <b>"I fixed Subspace layer"</b>?!',
-                done() { return player.points.gte("1e77777") },
-				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 1e77777 points. Reward: Fix Subspace layer's gain.",
 				image: "images/achs2/45.png",
+            },
+			46: {
+                name: 'WHAT DO YOU MEAN <b>"I fixed Subspace layer"</b>?!',
+                done() { return player.ss.subspace.gte(350000) && player.h.points.gte("1e60") && player.q.points.gte("1e75") },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 350000 subspaces, 1e60 hindrance spirits and 1e75 quirks. Reward: Fix Subspace layer's gain.",
+				image: "images/achs2/46.png",
             },
 			111: {
                 name: "Zzzzzzzzz...",
@@ -10617,7 +10670,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			return eff
 		},
 		update(diff) {
-			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(hasAchievement("ng/", 43)?new Decimal(player["ng/"].thoseAchievements).add(1):1).times(diff))
+			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(hasAchievement("ng/", 44)?new Decimal(player["ng/"].thoseAchievements).add(1):1).times(diff))
 		},
 		unlocked () {return false},
 		tabFormat: {
@@ -10766,7 +10819,7 @@ addLayer("shenanigans", { //HALVEDLOL
 				display() { // Everything else displayed in the buyable button after the title
                     return (tmp.nerdMode?("Cost Formula: 160000*(18^x)"):("Cost: "+format(tmp.shenanigans.buyables[35].cost)+" "+(tmp.shenanigans.buyables[35].cost.gt(1)?"SCABs":"SCAB")))+"<br>Amount: "+formatWhole(player.shenanigans.buyables[35])+"<br>"+(tmp.nerdMode?("Formula: 1.5^x"):("Boosts Super Generator's base and SCAB Generators by x"+format(tmp.shenanigans.buyables[35].effect)))
                 },
-                unlocked() { return player.shenanigans.unlocked }, 
+                unlocked() { return player.shenanigans.unlocked && player.sg.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[35].cost) },
                 buy() { 
                     player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[35].cost);
@@ -10791,5 +10844,8 @@ addLayer("shenanigans", { //HALVEDLOL
 				},
 				autoed() { return false },
 			},
-		}
+		},
+	componentStyles: {
+		"buyable"() { return {'width': '125px', 'height': '150px'} }
+	},
 })

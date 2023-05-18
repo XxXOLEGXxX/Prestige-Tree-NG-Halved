@@ -80,6 +80,7 @@ function shenanigansBingo() {
 	if(hasAchievement("ng/", 11, 12, 13, 14, 15, 16)) BINGO = BINGO.add(1)
 	if(hasAchievement("ng/", 21, 22, 23, 24, 25, 26)) BINGO = BINGO.add(1)
 	if(hasAchievement("ng/", 31, 32, 33, 34, 35, 36)) BINGO = BINGO.add(1)
+	if(hasAchievement("ng/", 41, 42, 43, 44, 45, 46)) BINGO = BINGO.add(1)
 	return BINGO
 }
 
