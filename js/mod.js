@@ -69,6 +69,22 @@ function getPointGen() {
 	return gain
 }
 
+function canSuperGenPoints(){
+	return hasUpgrade("sp", 11);
+}
+
+// Calculate points/sec!
+function getSuperPointGen() {
+	if(!canSuperGenPoints())
+		return new Decimal(0)
+
+	let gain = new Decimal(1)
+	if (hasUpgrade("sp", 12)) gain = gain.times(upgradeEffect("sp", 12));
+	if (hasUpgrade("sp", 13)) gain = gain.times(upgradeEffect("sp", 13));
+	if (hasUpgrade("sp", 22)) gain = gain.times(upgradeEffect("sp", 22));
+	return gain
+}
+
 function getRow1to6Speed() {
 	let speed = new Decimal(1);
 	if ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes("t"):false) speed = speed.times(tmp.t.effect2)
@@ -99,7 +115,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	function() { return player.devSpeed>1?"Actual points/s: "+format(getPointGen().mul(Decimal.mul(player.devSpeed, 1)))+"/s":"" }
+	function() { return player.devSpeed>1?"Actual points/s: "+format(getPointGen().mul(player.devSpeed))+"/s":"" }
 ]
 
 // Determines when the game "ends"

@@ -479,14 +479,17 @@ var saveInterval = setInterval(function() {
 // ************ Themes ************
 
 const themes = {
-	1: "aqua"
+	1: "aqua",
+	2: "oleg"
 }
 const theme_names = {
-	aqua: "Aqua"
+	aqua: "Aqua",
+	oleg: "Oleg"
 }
 
 function changeTheme() {
 	let aqua = player.theme == "aqua"
+	let oleg = player.theme == "oleg"
 	colors_theme = colors[player.theme || "default"]
 	document.body.style.setProperty('--background', aqua ? "#001f3f" : "#0f0f0f")
 	document.body.style.setProperty('--background_tooltip', aqua ? "rgba(0, 15, 31, 0.75)" : "rgba(0, 0, 0, 0.75)")

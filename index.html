@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="js/sc.js"></script>
 	<script type="text/javascript" src="js/help.js"></script>
 	<script type="text/javascript" src="js/layers.js"></script>
+	<script type="text/javascript" src="js/HyperLayers.js"></script>
 	<script type="text/javascript" src="js/mod.js"></script>
 	<script type="text/javascript" src="js/technical/temp.js"></script>
 	<script type="text/javascript" src="js/game.js"></script>
@@ -181,7 +182,7 @@
 						<br>Offline Time: {{formatTime(player.offTime?player.offTime.remain:0)}}<br>
 					</span>
 					<span v-if="!player.keepGoing" class="overlayThing">
-						<br><span v-if="modInfo.specialEndgameText">{{modInfo.specialEndgameText}}</span><span v-if="!modInfo.specialEndgameText">Reach {{formatWhole(modInfo.endgame)+" "+modInfo.pointsName}} to beat the game!<br><br>Current NG/ Endgame: 1e94500 points</span><br>
+						<br><span v-if="modInfo.specialEndgameText">{{modInfo.specialEndgameText}}</span><span v-if="!modInfo.specialEndgameText">Reach {{formatWhole(modInfo.endgame)+" "+modInfo.pointsName}} to beat the game!<br><br>Current NG/ Endgame: 1e220000 Dissolved Drained Distortions</span><br>
 					</span>
 					<br>
 					<span v-if="player.points.lt('1e1000')">You have </span>

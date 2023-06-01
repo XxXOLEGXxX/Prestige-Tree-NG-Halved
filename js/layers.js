@@ -1,4 +1,5 @@
 var testTree = [["node shenanigans", "blank", "node omega", "blank", "node paradox"]]
+window.treeTest = [["spnode"]]
 
 addLayer("p", { //HALVEDLOL
         name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -3432,12 +3433,12 @@ addLayer("q", { //HALVEDLOL
 				return req;
 			},
 			amount() { //HALVEDLOL
-				let amt = player.q.energy.div(2).div(this.baseReq()).plus(1).log10().div(2).root(layers.q.impr.scaleSlow().pow(-1).plus(1)).max(0);
+				let amt = player.q.energy.div(this.baseReq()).plus(1).log10().div(2).root(layers.q.impr.scaleSlow().pow(-1).plus(1)).max(0);
 				if (amt.gte(270)) amt = amt.log10().times(270/Math.log10(270));
 				return amt.floor();
 			},
 			overallNextImpr() {  //HALVEDLOL
-				let impr = tmp.q.impr.amount.div(2).plus(1);
+				let impr = tmp.q.impr.amount.plus(1);
 				if (impr.gte(270)) impr = Decimal.pow(10, impr.div(270/Math.log10(270)));
 				return Decimal.pow(10, impr.pow(layers.q.impr.scaleSlow().pow(-1).plus(1)).times(2)).sub(1).times(this.baseReq()) 
 			},
@@ -10162,6 +10163,7 @@ addLayer("paradox", { //HALVEDLOL
 			if (theThing.gte(player.paradox.paradoxPower)) theThing = new Decimal(player.paradox.paradoxPower).mul(0.99)
 			player.devSpeed = tmp.paradox.effect.root(2)
 			player.paradox.paradoxPower = player.paradox.paradoxPower.sub(theThing)
+			if(hasAchievement("ng/", 54) && (getResetGain("paradox").mag*0.9 > player.paradox.points.mag)) player.paradox.points = player.paradox.points.times(diff.div(tmp.paradox.effect.root(2)).times(2).add(1))
 		},
 		tabFormat: ["main-display",
 			"prestige-button",
@@ -10174,6 +10176,7 @@ addLayer("paradox", { //HALVEDLOL
 		buyables: { //HALVEDLOL
 			rows: 3,
 			cols: 2,
+			respec() {return "Lol"},
 			11: {
 				title() { return hasAchievement("ng/", 13)?"Store 50% of points":"Do Paradox Reset to unlock" },
 				effect() { return new Decimal(0) },
@@ -10360,10 +10363,10 @@ addLayer("paradox", { //HALVEDLOL
 				25: {
 					title: "Hey dawg, I heard you like Prestige Tree... [WIP]",
 					description: "Unlock Hyper Prestige Points.",
-					cost() { return new Decimal("1e94500") },
+					cost() { return new Decimal("1e220000") },
 					unlocked() { return hasUpgrade("paradox", 24) },
 					currencyInternalName: "points",
-					currencyDisplayName: "points",
+					currencyDisplayName: "Dissolved Drained Distortions",
 					currencyLayer: "c",
 				},
 		},
@@ -10407,6 +10410,9 @@ addLayer("paradox", { //HALVEDLOL
 			player.ai.unlocked = false
 			player.c.unlocked = false
 		},
+        hotkeys: [
+            {key: "k", description: "Press K to Annihilate", onPress(){if (hasAchievement("ng/", 13)) tmp.paradox.buyables[21].buy()}},
+        ],
 })
 
 addLayer("ng/", { //HALVEDLOL
@@ -10434,7 +10440,7 @@ addLayer("ng/", { //HALVEDLOL
 			},
 			"Achievements": {
 				content: [
-					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/24<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
+					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/29<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
 				],
 			},
 		},
@@ -10536,7 +10542,7 @@ addLayer("ng/", { //HALVEDLOL
                 name: "FINALLY... AT LAST!",
                 done() { return player.points.gte("1e9000") },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 1e9000 points. Reward: Reveal 3rd NG/ layer.",
+                tooltip: "Reach 1e9000 points. Reward: Reveal 3rd NG/ layer.<br>(check paradox layer)",
 				image: "images/achs2/32.png",
             },
             33: {
@@ -10557,7 +10563,7 @@ addLayer("ng/", { //HALVEDLOL
                 name: "Short Lived Satisfaction",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.points.gte("1e6015") && inChallenge("h", 31) && challengeCompletions("h", 31) >= 3 },
-                tooltip: 'Reach 1e6015 points in "Timeless" after 3 completions.',
+                tooltip: 'Reach 1e6015 points in "Timeless" after 3 completions.<br>(check paradox layer, again)',
 				image: "images/achs2/35.png",
 			},
             36: {
@@ -10609,12 +10615,47 @@ addLayer("ng/", { //HALVEDLOL
                 tooltip: "Reach 350000 subspaces, 1e60 hindrance spirits and 1e75 quirks. Reward: Fix Subspace layer's gain.",
 				image: "images/achs2/46.png",
             },
+			51: {
+                name: "That wasn't supposed to happen",
+                done() { return tmp.q.impr.amount.gte(1) },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 1 Quirk Improvement.",
+				image: "images/achs2/46.png",
+            },
+			52: {
+                name: "What did I do to you to deserve this",
+                done() { return player.m.unlocked && player.ba.unlocked },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Unlock Magic and Balance layers.",
+				image: "images/achs2/46.png",
+            },
+			53: {
+                name: "My disappointment is immeasurable and my day is ruined.",
+                done() { return player.m.hexes.gte(1) },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: 'Use magic.',
+				image: "images/achs2/s14.png",
+            },
+			54: {
+                name: '"Solarity is my favorite layer"',
+                done() { return player.o.buyables[12].gte(Decimal.pow(2, 1024)) },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 1.79e308 Tachoclinal Plasmas. Reward: You slowly gain Paradoxes up to 90% of reset gain's magnitude in global time.",
+				image: "images/achs2/46.png",
+            },
+            55: {
+                name: "wait what",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return tmp.hp.layerShown },
+                tooltip: "Unlock Hyper Prestige Layer",
+				image: "images/achs2/26.png",
+            },
 			111: {
                 name: "Zzzzzzzzz...",
                 done() { return player.g.points.eq(1) && player.b.unlocked == false && player.g.power.gte(1006) && hasAchievement("ng/", 13) == false  && player.omega.points.eq(0) },
 				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
                 tooltip: "Reach 1006 Generator Power with just one Generator and nothing else.",
-				unlocked() { return this.done() },
+				unlocked() { return this.done() || hasAchievement("ng/", 111) },
 				image: "images/achs2/s11.png",
             },
 			112: {
@@ -10622,7 +10663,7 @@ addLayer("ng/", { //HALVEDLOL
                 done() { return player.b.points.gte(4) && player.g.unlocked == false && hasAchievement("ng/", 13) == false },
 				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
                 tooltip: "Reach 4 Boosters without Generator or Paradox.",
-				unlocked() { return this.done() },
+				unlocked() { return this.done() || hasAchievement("ng/", 112) },
 				image: "images/achs2/s12.png",
             },
 			113: {
@@ -10630,15 +10671,15 @@ addLayer("ng/", { //HALVEDLOL
                 done() { return (player.t.unlocked && player.s.unlocked) && !player.e.unlocked },
 				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
                 tooltip: "Unlock Time and Space first.",
-				unlocked() { return this.done() },
+				unlocked() { return this.done() || hasAchievement("ng/", 113) },
 				image: "images/achs2/s13.png",
             },
 			114: {
                 name: "STOP LOOKING AT LAYERS.JS<br><br><br><br><br>(please)",
-                done() { return (!hasUpgrade("paradox", 24)) && player.b.points == 0 && player.g.points == 0 && player.sb.points == 0 && player.t.points == 0 && player.s.points == 0 && player.sg.points == 0 && player.t.buyables[11] == 0 && player.e.buyables[11] == 0 && player.s.buyables[11] == 0 && player.s.buyables[12] == 0 && player.s.buyables[13] == 0 && player.s.buyables[14] == 0 && player.s.buyables[15] == 0 && player.b.upgrades == false && player.p.upgrades.length == 1 },
+                done() { return (player.points.gte("1e40500") && !hasUpgrade("paradox", 25)) && player.b.points == 0 && player.g.points == 0 && player.sb.points == 0 && player.t.points == 0 && player.s.points == 0 && player.sg.points == 0 && player.t.buyables[11] == 0 && player.e.buyables[11] == 0 && player.s.buyables[11] == 0 && player.s.buyables[12] == 0 && player.s.buyables[13] == 0 && player.s.buyables[14] == 0 && player.s.buyables[15] == 0 && player.b.upgrades == false && player.p.upgrades.length == 1 && inChallenge("h", 31)},
 				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
-                tooltip: 'Reach 1e6145 points in <b>"Timeless"</b> without most of Row 3 resources, 0 booster upgrades and "Begin" upgrade only.',
-				unlocked() { return this.done() },
+                tooltip: 'Reach 1e40500 points in "Timeless" without most of Row 3 resources, 0 booster upgrades and "Begin" upgrade only before Hyper Prestige Points.',
+				unlocked() { return this.done() || hasAchievement("ng/", 114) },
 				image: "images/achs2/s14.png",
             },
 		},
@@ -10654,6 +10695,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			bingoRow: new Decimal(1),
 			ShenanigansChaosAntiBalancers: new Decimal(0),
 			refund: new Decimal(0),
+			buymaxdeeznuts: false,
 			first: 0,
         }},
         color: "#791C29",
@@ -10691,7 +10733,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 		},
 		buyables: { //HALVEDLOL
-			rows: 8,
+			rows: 11,
 			cols: 6,
 			showRespec() { return player.shenanigans.unlocked },
             respec() { // Optional, reset things and give back your currency. Having this function makes a respec button appear
@@ -10710,11 +10752,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[11].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[11].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[11].cost);
-					player.shenanigans.buyables[11] = player.shenanigans.buyables[11].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(6)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(new Decimal(6).pow(player.shenanigans.buyables[11]))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(new Decimal(6).pow(player.shenanigans.buyables[11]))
+				},
 			},
 			21: {
 				cost() { return Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[21])) },
@@ -10726,11 +10796,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[21].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[21].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[21].cost);
-					player.shenanigans.buyables[21] = player.shenanigans.buyables[21].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(12)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[21])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[21])))
+				},
 			},
 			22: {
 				cost() { return Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[22])) },
@@ -10742,11 +10840,40 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[22].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[22].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[22].cost);
-					player.shenanigans.buyables[22] = player.shenanigans.buyables[22].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(12)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   amt.sub(1)
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[22])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(400, new Decimal(12).pow(player.shenanigans.buyables[22])))
+				},
 			},
 			31: {
 				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[31])) },
@@ -10758,11 +10885,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[31].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[31].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[31].cost);
-					player.shenanigans.buyables[31] = player.shenanigans.buyables[31].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(18)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[this.id])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[this.id])))
+				},
 			},
 			32: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[32])) },
@@ -10774,11 +10929,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[32].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[32].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[32].cost);
-					player.shenanigans.buyables[32] = player.shenanigans.buyables[32].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(17)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+				},
 			},
 			33: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[33])) },
@@ -10790,11 +10973,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[33].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[33].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[33].cost);
-					player.shenanigans.buyables[33] = player.shenanigans.buyables[33].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(17)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+				},
 			},
 			34: {
 				cost() { return Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[34])) },
@@ -10806,11 +11017,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[34].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[34].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[34].cost);
-					player.shenanigans.buyables[34] = player.shenanigans.buyables[34].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(17)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(130000, new Decimal(17).pow(player.shenanigans.buyables[this.id])))
+				},
 			},
 			35: {
 				cost() { return Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[35])) },
@@ -10822,11 +11061,39 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked && player.sg.unlocked }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[35].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[35].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[35].cost);
-					player.shenanigans.buyables[35] = player.shenanigans.buyables[35].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let amt = new Decimal(0)
+						   let cost = tmp.shenanigans.buyables[this.id].cost
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   cost = cost.mul(18)
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
 				},
 				autoed() { return false },
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (amount.lt(1) || !player.shenanigans.unlocked || !player.sg.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[this.id])))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.mul(160000, new Decimal(18).pow(player.shenanigans.buyables[this.id])))
+				},
 			},
 			81: {
 				cost() { return Decimal.pow(10, Decimal.plus(player.shenanigans.buyables[81], 0).mul(Decimal.plus(player.shenanigans.buyables[81], 0))) },
@@ -10838,14 +11105,92 @@ addLayer("shenanigans", { //HALVEDLOL
                 unlocked() { return player.shenanigans.unlocked && hasAchievement("ng/", 34) }, 
                 canAfford() { return new Decimal(player.shenanigans.ShenanigansChaosAntiBalancers).gte(tmp.shenanigans.buyables[81].cost) },
                 buy() { 
-                    player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[81].cost);
-					player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[81].cost);
-					player.shenanigans.buyables[81] = player.shenanigans.buyables[81].plus(1);
+					if(player.shenanigans.buymaxdeeznuts) { tmp.shenanigans.buyables[this.id].buyMax() }
+					else {
+						player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.refund = Decimal.add(player.shenanigans.refund, tmp.shenanigans.buyables[this.id].cost);
+						player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(1);
+					}
+				},
+				buyMax() { let swagger = false
+						   let scabs = player.shenanigans.ShenanigansChaosAntiBalancers
+						   let scalethingy = player.shenanigans.buyables[81]
+						   let amt = new Decimal(0)
+						   let cost = Decimal.pow(10, Decimal.mul(scalethingy, scalethingy))
+						   let refundish = new Decimal(0)
+						   for (let i = 0; swagger == false; i++) {
+							   if(scabs.gte(cost)) {
+								   refundish = refundish.add(cost)
+								   scalethingy = scalethingy.add(1)
+								   cost = Decimal.pow(10, Decimal.mul(scalethingy, scalethingy))
+								   amt = amt.add(1)
+							   }
+							   else swagger = true
+						   }
+						   player.shenanigans.ShenanigansChaosAntiBalancers = Decimal.sub(player.shenanigans.ShenanigansChaosAntiBalancers, refundish);
+						   player.shenanigans.refund = Decimal.add(player.shenanigans.refund, refundish);
+					       player.shenanigans.buyables[this.id] = player.shenanigans.buyables[this.id].plus(amt);
+							
+				},
+				sellOne() {
+					let amount = getBuyableAmount(this.layer, this.id)
+					if (!hasAchievement("ng/", 34) || amount.lt(1) || !player.shenanigans.unlocked) return;
+					setBuyableAmount(this.layer, this.id, amount.sub(1))
+                    player.shenanigans.refund = player.shenanigans.refund.sub(Decimal.pow(10, Decimal.plus(player.shenanigans.buyables[this.id], 0).mul(Decimal.plus(player.shenanigans.buyables[this.id], 0))))
+                    player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(Decimal.pow(10, Decimal.plus(player.shenanigans.buyables[this.id], 0).mul(Decimal.plus(player.shenanigans.buyables[this.id], 0))))
+				},
+				autoed() { return false },
+			},
+			111: {
+				cost() { return new Decimal(1) },
+				title() { return "Buy Max Toggle" },
+				display() { return "<h1>"+(player.shenanigans.buymaxdeeznuts?"ON":"OFF")+"<h1/>"},
+                unlocked() { return player.shenanigans.unlocked }, 
+                canAfford() { return true },
+                buy() { 
+					player.shenanigans.buymaxdeeznuts = !player.shenanigans.buymaxdeeznuts
 				},
 				autoed() { return false },
 			},
 		},
 	componentStyles: {
-		"buyable"() { return {'width': '125px', 'height': '150px'} }
+		"buyable"() { return {'width': '125px', 'height': '150px', 'margin-left': '0px', 'margin-right': '0px'} },
 	},
+})
+
+addLayer("hp", { //HALVEDLOL
+        name: "hyperprestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "HP", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        color: "#31aeb0",
+        requires: new Decimal(10), // Can be a function that takes requirement increases into account
+        resource: "hyper prestige points", // Name of prestige currency
+        baseResource: "points", // Name of resource prestige is based on
+        baseAmount() {return player.hp.hyperpoints}, // Get the current amount of baseResource
+        type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        exponent() { return 0.5 }, // Prestige currency exponent
+        gainMult() { // Calculate the multiplier for main currency from bonuses //HALVEDLOL
+            mult = new Decimal(1)
+            return mult
+        },
+        gainExp() { // Calculate the exponent on main currency from bonuses //HALVEDLOL
+            let exp = new Decimal(1)
+			return exp;
+        },
+		update(diff){
+			player.hp.hyperpoints = player.hp.hyperpoints.add(getSuperPointGen().mul(diff).div(tmp.paradox.effect.root(2)))
+		},
+		tabFormat: [["display-text", function(){return "<span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>You have</span> <h2 style ='display: inline; font-family: 'Lucida Console', 'Courier New', monospace; transition-duration: 0.5s; text-align: center; font-weight: bold; margin: auto;'>"+format(player.hp.hyperpoints)+"</h2> <span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>super points</span>"}],
+				    "blank", "blank", "blank", ["tree", treeTest]],
+        row: 3, // Row the layer is in on the tree (0 is the first row)
+		branches: ["sg", "sb"],
+        layerShown(){return hasUpgrade("paradox", 25)},
+		startData() { return {
+			unlocked: true,
+			points: new Decimal(0),
+			best: new Decimal(0),
+			total: new Decimal(0),
+			first: 0,
+			hyperpoints: new Decimal(10)
+		}},
 })
