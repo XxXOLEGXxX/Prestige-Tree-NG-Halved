@@ -100,14 +100,31 @@ let help_data = {
 	omega1: {
 		id: "omega1",
 		title: "1st Omega Layer",
-		text: "Do resets, buy Prestige Upgrades, and let your Points grow. There really isn't much to this phase of the game.",
+		text: `Now this is where NG/ truly begins. Unlike in PTR, where they are no wrong decisions, it's very preferred to choose Generators at beginning as they will provide sufficient boost (especially when you unlock Paradox). Otherwise it's mostly the same as normal Row 2.<br><br>After unlocking Paradox, make sure to store both your Prestige Points and Points to get boosters and generators faster and purchase DDD upgrades whenever possible for more consistent boosts from annihilations. I recommend getting two Paradoxes right away.<br><br>If you have any more questions, refer to Row 2.`,
 		unlocked() { return player.omega.points.gte(1) },
 	},
 	omega2: {
 		id: "omega2",
 		title: "2nd Omega Layer",
-		text: "Do resets, buy Prestige Upgrades, and let your Points grow. There really isn't much to this phase of the game.",
+		text: `At this point it should be straightforward until Row 3. Enhance will be your best friend as not only is it point-based and not only is it also a non-static layer, but it also gives an immediate boost to both Booster and Generator. Something of which you won't get from Time or Space.<br><br>If you do manage to start off with other layer or even unlock both Time and Space... Let's face it, Gods ain't going to help you out this one.<br><br>At some point, you want to do Paradox reset once you'll have high enough reset gain to get an achievement. The rest is basically the same as original PTR.`,
 		unlocked() { return player.omega.points.gte(2) },
 	},
-	
+	omega3: {
+		id: "omega3",
+		title: "3rd Omega Layer",
+		text: `At this point, you should be able to BLAST through Row 3 like it's nothing. This is also where you get to unlock new NG/ layer - Shenanigans and will be forced to do Paradox reset. (again)<br><br>Shenanigans is a 3rd NG/ exclusive layer that does not require you to reset to gain any benefits from it. It also nicely works with Paradox's effect. Incase if you get stuck at some point, try this setup yourself:<br>SB => B => P => Any of Row 3 (S,T,E) => SG => G<br><br>You'll unlock few more SCAB buyables later on, but the most important one will allow you to gain more SCABs to buy more SCAB buyables.<br><br>Due the way NG/ has affected the game, you'll be forced to go with Subspace until later in this game.`,
+		unlocked() { return player.omega.points.gte(3) },
+	},
+	omega4: {
+		id: "omega4",
+		title: "4th Omega Layer",
+		text: `Once you get all the way back to the point where you performed Omega Layer reset before, do Paradox reset. You should be able to go back in NO TIME at this point.<br><br>The strategy for the rest of Omega Levels will involve managing SCAB buyables, spamming annihilations and occasionally performing Paradox resets to advance further and gain more SCABs... And you'll be able to get both Solarity and Subspace this time.<br><br>Magic and Balance has gotten the same treatment as Booster and Generator in NG/. While Magic automates Solarity, it's core mechanic is completely butchered by Paradox while Balance gets enhanced by Paradox.<br>tl;dr: ignore this part.<br><br>Simply follow Row 5 Guide and keep pushing until you gain 1.78e308 Tachoclinal Plasmas, partially automatizing Paradox. At 1e216,000 DDD you'll unlock Hyper Prestige, which functions as miniature version of PTR. Supers in this layer, Unlike Spectrals (which you'll get at much later stage), contribute to their original counterpart's upgrades. Keep pushing in HP until you reach 1e1,000,000 points, unlocking Hyper Prestige tab. Unlike Super Prestige Tree, Hyper Prestige persists through all resets.<br><br>Grind for Hyper Prestige Points and purchase HPP upgrades whenever you can, complete Alpha Level 1 and utilize Magic to grind up to 1e5,680,000 points to reach the next Omega Level.`,
+		unlocked() { return player.omega.points.gte(4) },
+	},
+	omega5: {
+		id: "omega5",
+		title: "5th Omega Layer",
+		text: `It is recommended that you perform Paradox Layer reset before getting Phantom Soul. You should be able to recover just as fast, if not faster.<br><br>There's not much to explain what's already written in base guide other than to always check your NG/ layers, HP and spam Magic spells to proceed further. You'll eventually be able to beat first two Alpha Levels, at which point you should have unlocked Central Madness. Visitting this challenge once can greatly increase your point gain thanks to aforementioned 5th Omega Level's effect.<br><br>Honour Level can been trivialized via Omega Levels's boosts and Central Madness abuse.`,
+		unlocked() { return player.omega.points.gte(5) },
+	},
 }

@@ -39,7 +39,7 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(0.5) //HALVEDLOL
+	let gain = new Decimal(0.5).mul(player.hp.hyperpoints.add(1).pow(1000).pow(player.hp.challenges[11]>=1?tmp.omega.effect:1)) //HALVEDLOL
 	if (hasMilestone("omega", 0)) gain = gain.times(2)
 	if (hasMilestone("omega", 3)) gain = gain.times(new Decimal(10).pow(tmp.paradox.effect.root(2)))
 	if (player.paradox.unlocked) gain = gain.times(tmp.paradox.effectPow)
@@ -70,7 +70,7 @@ function getPointGen() {
 }
 
 function canSuperGenPoints(){
-	return hasUpgrade("sp", 11);
+	return true
 }
 
 // Calculate points/sec!
@@ -78,11 +78,10 @@ function getSuperPointGen() {
 	if(!canSuperGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
-	if (hasUpgrade("sp", 12)) gain = gain.times(upgradeEffect("sp", 12));
-	if (hasUpgrade("sp", 13)) gain = gain.times(upgradeEffect("sp", 13));
-	if (hasUpgrade("sp", 22)) gain = gain.times(upgradeEffect("sp", 22));
-	return gain
+	let gain = tmp.hp.buyables[11].effect.mul(tmp.hp.buyables[21].effect).mul(player.hp.superGenPower.add(1).root(3))
+    if(player.omega.points.gte(5)) gain = gain.mul(tmp.o.solPow.mul(tmp.ss.eff2.add(1)).pow(tmp.o.solPow.pow(tmp.ss.eff2.add(1))))
+	if(inChallenge("hp",11)&&player.hp.alphaLevel>=1) gain = gain.sqrt()
+	return gain.root(inChallenge("hp",11)?new Decimal(1).add(player.hp.alphaLevel/3):1)
 }
 
 function getRow1to6Speed() {
@@ -97,6 +96,8 @@ function shenanigansBingo() {
 	if(hasAchievement("ng/", 21, 22, 23, 24, 25, 26)) BINGO = BINGO.add(1)
 	if(hasAchievement("ng/", 31, 32, 33, 34, 35, 36)) BINGO = BINGO.add(1)
 	if(hasAchievement("ng/", 41, 42, 43, 44, 45, 46)) BINGO = BINGO.add(1)
+	if(hasAchievement("ng/", 51, 52, 53, 54, 55, 56)) BINGO = BINGO.add(1)
+	if(hasAchievement("ng/", 61, 62, 63, 64, 65, 66)) BINGO = BINGO.add(1)
 	return BINGO
 }
 
@@ -115,7 +116,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	function() { return player.devSpeed>1?"Actual points/s: "+format(getPointGen().mul(player.devSpeed))+"/s":"" }
+	function() { return player.devSpeed>1?"(("+format(getPointGen().mul(player.devSpeed))+"/s))":"" }
 ]
 
 // Determines when the game "ends"

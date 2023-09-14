@@ -1,5 +1,4 @@
 var testTree = [["node shenanigans", "blank", "node omega", "blank", "node paradox"]]
-window.treeTest = [["spnode"]]
 
 addLayer("p", { //HALVEDLOL
         name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -517,7 +516,7 @@ addLayer("b", { //HALVEDLOL
 				unlocked() { return hasAchievement("a", 41) },
 				effect() { 
 					let exp = ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?1e4:1
-					return Decimal.pow(1e10, player.sb.points.div(2).pow(1.25)).pow(exp); 
+					return Decimal.pow(1e10, player.sb.points.add(player.hp.buyables[21]).div(2).pow(1.25)).pow(exp); 
 				},
 				effectDisplay() { return format(tmp.b.upgrades[31].effect)+"x" },
 				formula() { 
@@ -536,7 +535,7 @@ addLayer("b", { //HALVEDLOL
 				description: "<b>More Additions</b> is stronger based on your Super Boosters.",
 				cost() { return tmp.h.costMult11b.times(118) },
 				unlocked() { return hasAchievement("a", 41) },
-				effect() { return player.sb.points.div(2).times(player.sb.points.gte(4)?1.8:1.5).plus(1).pow(((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?2:1) },
+				effect() { return player.sb.points.add(player.hp.buyables[21]).div(2).times(player.sb.points.gte(4)?1.8:1.5).plus(1).pow(((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?2:1) },
 				effectDisplay() { return format(tmp.b.upgrades[33].effect)+"x" },
 				formula() { 
 					let exp = ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false)?2:1
@@ -1741,6 +1740,7 @@ addLayer("s", { //HALVEDLOL
 		},
 		autoPrestige() { return player.s.auto&&hasMilestone("q", 3)&&player.ma.current!="s" },
 		update(diff) {
+			if (hasAchievement("ng/",42)&&!hasAchievement("ng/",43)) for (let i=(5+player.i.buyables[11].toNumber());i>=1;i--) if(tmp.s.buyables[10+i].canAfford) layers.s.buyables[10+i].buy();
 			if (player.s.autoBld && (hasMilestone("q", 7) || hasAchievement("ng/", 43))) for (let i=(5+player.i.buyables[11].toNumber());i>=1;i--) layers.s.buyables[10+i].buyMax();
 		},
 		upgrades: {
@@ -2499,6 +2499,10 @@ addLayer("sb", { //HALVEDLOL
 			if ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false) mult = mult.div(7/6); //HALVEDLOL
 			return mult;
 		},
+		extraAmtDisplay() {
+			if (player.hp.buyables[21].eq(0)) return "";
+			return "<h3 style='color: rgba(80,72,153,0.5); text-shadow: rgba(80,72,153,0.5) 0px 0px 10px;'> + "+format(player.hp.buyables[21].mul(tmp.hp.buyables[31].effect))+"</h3>"
+		},
 		autoPrestige() { return player.sb.auto && hasMilestone("q", 4) && player.ma.current!="sb" },
 		canBuyMax() { return hasMilestone("q", 7) },
         row: 2, // Row the layer is in on the tree (0 is the first row)
@@ -2526,7 +2530,7 @@ addLayer("sb", { //HALVEDLOL
 		},
 		effect() { //HALVEDLOL
 			if (!unl(this.layer)) return new Decimal(1);
-			return Decimal.pow(this.effectBase(), player.sb.points.div(2)).max(0);
+			return Decimal.pow(this.effectBase(), player.sb.points.add(player.hp.buyables[21].mul(tmp.hp.buyables[31].effect)).div(2)).max(0);
 		},
 		effectDescription() {
 			return "which are multiplying the Booster base by "+format(tmp.sb.effect)+"x"+(tmp.nerdMode?("\n ("+format(tmp.sb.effectBase)+"x each)"):"")
@@ -2576,6 +2580,10 @@ addLayer("sg", { //HALVEDLOL
 			if ((Array.isArray(tmp.ma.mastered))?tmp.ma.mastered.includes(this.layer):false) mult = mult.div(1.05); //HALVEDLOL
 			return mult;
 		},
+		extraAmtDisplay() {
+			if (player.hp.buyables[22].eq(0)) return "";
+			return "<h3 style='color: rgba(36,130,57,0.5); text-shadow: rgba(36,130,57,0.5) 0px 0px 10px;'> + "+format(player.hp.buyables[22].mul(tmp.hp.buyables[31].effect))+"</h3>"
+		},
 		autoPrestige() { return player.sg.auto && hasMilestone("q", 6) && player.ma.current!="sg" },
 		update(diff) {
 			player.sg.power = player.sg.power.plus(tmp.sg.effect.times(diff));
@@ -2604,7 +2612,7 @@ addLayer("sg", { //HALVEDLOL
 		},
 		effect() { //HALVEDLOL
 			if (!unl(this.layer)) return new Decimal(0);
-			let eff = Decimal.pow(this.effectBase(), player.sg.points.div(2)).sub(1).max(0);
+			let eff = Decimal.pow(this.effectBase(), player.sg.points.add(player.hp.buyables[22].mul(tmp.hp.buyables[31].effect)).div(2)).sub(1).max(0);
 			if (tmp.h.challenges[31].unlocked) eff = eff.times(challengeEffect("h", 31));
 			return eff;
 		},
@@ -3014,6 +3022,7 @@ addLayer("q", { //HALVEDLOL
 		},
 		enGainExp() { //HALVEDLOL
 			let exp = player.q.buyables[11].div(2).plus(tmp.q.freeLayers.div(2)).sub(1);
+            exp = exp.pow(player.hp.challenges[11]>=2?player.hp.challenges[11]/18+1:1);
 			return exp;
 		},
 		enEff() { //HALVEDLOL
@@ -4614,7 +4623,7 @@ addLayer("ba", { //HALVEDLOL
 			if (hasUpgrade("ba", 24)) mult = mult.times(upgradeEffect("ba", 24).pos);
 			return mult;
 		},
-		posGain() { return Decimal.pow(tmp.ba.dirBase, (hasMilestone("hn", 2)&&player.ma.current!="ba")?1:player.ba.allotted).times((hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(player.ba.allotted)).times(tmp.ba.posGainMult) }, //HALVEDLOL
+		posGain() { return Decimal.pow(tmp.ba.dirBase, (hasMilestone("hn", 2)&&player.ma.current!="ba")?1:player.ba.allotted).times((hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(player.ba.allotted)).times(tmp.ba.posGainMult).times(player.omega.points.gte(5)?tmp.ba.negNerf:1) }, //HALVEDLOL
 		posBuff() { //HALVEDLOL
 			let eff = player.ba.pos.div(2).plus(1).log10().plus(1).div(tmp.ba.negNerf); 
 			eff = softcap("posBuff", eff);
@@ -4629,7 +4638,7 @@ addLayer("ba", { //HALVEDLOL
 			if (hasUpgrade("ba", 24)) mult = mult.times(upgradeEffect("ba", 24).neg);
 			return mult;
 		},
-		negGain() { return Decimal.pow(tmp.ba.dirBase, (hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(1-player.ba.allotted)).times((hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(1-player.ba.allotted)).times(tmp.ba.negGainMult) }, //HALVEDLOL
+		negGain() { return Decimal.pow(tmp.ba.dirBase, (hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(1-player.ba.allotted)).times((hasMilestone("hn", 2)&&player.ma.current!="ba")?1:(1-player.ba.allotted)).times(tmp.ba.negGainMult).times(player.omega.points.gte(5)?tmp.ba.posNerf:1) }, //HALVEDLOL
 		negBuff() { //HALVEDLOL
 			let eff = player.ba.neg.div(2).plus(1).pow((hasUpgrade("ba", 13))?5:1).div(tmp.ba.posNerf);
 			eff = softcap("negBuff", eff);
@@ -4887,7 +4896,7 @@ addLayer("ps", { //HALVEDLOL
 			first: 0,
         }},
         color: "#b38fbf",
-        requires() { return new Decimal("1e16000") }, // Can be a function that takes requirement increases into account
+        requires() { return new Decimal("1e16000").pow(hasAchievement("ng/",65)?1-(2/9):1).pow(hasAchievement("ng/",65)?1-(2/9):1) }, // Can be a function that takes requirement increases into account
         resource: "phantom souls", // Name of prestige currency
         baseResource: "quirk energy", // Name of resource prestige is based on
         baseAmount() {return player.q.energy}, // Get the current amount of baseResource
@@ -10004,10 +10013,10 @@ addLayer("omega", { //HALVEDLOL
         symbol: "Ω", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         color: "gray",
-        requires() { return [102,28,("1e2390"),("1e29750"),Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
+        requires() { return [102,14,"1e2530","1e34700","1e5680000",Infinity][player.omega.points||0] }, // Can be a function that takes requirement increases into account
         resource() { return player.omega.points>1?"Omega Levels":"Omega Level" }, // Name of prestige currency
-        baseResource() { return ["points", "boosters and generators", "points", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
-        baseAmount() { return [player.points, player.b.points.add(player.g.points), player.points, player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
+        baseResource() { return ["points", "pairs boosters and generators", "points", "points", "points", "points", "points", "points", "points"][player.omega.points||0] }, // Name of resource prestige is based on
+        baseAmount() { return [player.points, player.b.points.add(player.g.points).min(player.b.points).min(player.g.points), player.points, player.points, player.points, player.points][player.omega.points||0]}, // Get the current amount of baseResource
         type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         exponent() { return 1 }, // Prestige currency exponent
 		base() { return 1 },
@@ -10058,6 +10067,12 @@ addLayer("omega", { //HALVEDLOL
 				effectDescription(){ return "Quirky Boost:<br>Paradoxes boost point gain by x"+format(new Decimal(10).pow(tmp.paradox.effect.root(2)))+"<br>Global Speed is applied on Quirk Layers twice"},
 				unlocked() { return  player.omega.points >= 3 },
 			},
+			4: {
+				requirementDescription: "5th Omega Level",
+				done() { return player.omega.points >= 5 },
+				effectDescription(){ return "Self-Synergysm:<br>Super Point's magnitude boosts SCAB gain (x"+format(player.hp.hyperpoints.add(1).log(10).add(1))+")<br>Negativity and Positivity's nerfs boost each other's gain<br>Solar Power and Space Building Power multiply Super Point gain by x"+format(tmp.o.solPow.mul(tmp.ss.eff2.add(1)).pow(tmp.o.solPow.pow(tmp.ss.eff2.add(1))))},
+				unlocked() { return  player.omega.points >= 4 },
+			},
 		},
 		doReset(resettingLayer) {
 			player.b.unlockOrder = 0
@@ -10098,6 +10113,7 @@ addLayer("omega", { //HALVEDLOL
 			player.r.unlocked = false
 			player.ai.unlocked = false
 			player.c.unlocked = false
+            layerDataReset("hp")
 		},
 		startData() { return {
 			unlocked: false,
@@ -10163,7 +10179,8 @@ addLayer("paradox", { //HALVEDLOL
 			if (theThing.gte(player.paradox.paradoxPower)) theThing = new Decimal(player.paradox.paradoxPower).mul(0.99)
 			player.devSpeed = tmp.paradox.effect.root(2)
 			player.paradox.paradoxPower = player.paradox.paradoxPower.sub(theThing)
-			if(hasAchievement("ng/", 54) && (getResetGain("paradox").mag*0.9 > player.paradox.points.mag)) player.paradox.points = player.paradox.points.times(diff.div(tmp.paradox.effect.root(2)).times(2).add(1))
+			if(!hasAchievement("ng/", 66) && hasAchievement("ng/", 54) && (getResetGain("paradox").mag*0.9 > player.paradox.points.mag)) player.paradox.points = player.paradox.points.times(diff.div(tmp.paradox.effect.root(2)).times(2).add(1))
+            if(hasAchievement("ng/", 66) && (getResetGain("paradox").mag > player.paradox.points.mag)) player.paradox.points = player.paradox.points.times(diff.mul(new Decimal(getResetGain("paradox").mag).pow(100)).add(1))
 		},
 		tabFormat: ["main-display",
 			"prestige-button",
@@ -10221,20 +10238,18 @@ addLayer("paradox", { //HALVEDLOL
                 },
                 unlocked() { return true }, 
                 canAfford() {
-					return hasAchievement("ng/", 13)
+					return hasAchievement("ng/", 13) && hasUpgrade("p", 11)
 				},
 				gain() {
-					let halfPoints = player.points.div(2)
-					let halfPrestigePoints = player.p.points.div(2)
-					let gain = halfPoints.pow(14).mul(halfPrestigePoints.pow(16.5)).root(100).sub(1).max(0)
+					let gain = player.points.div(2).pow(14).mul(player.p.points.div(2).pow(16.5)).root(100).sub(1).max(0)
 					if (hasAchievement("ng/", 25)) gain = gain.times(1e42)
 					return gain
 				},
                 buy() { 
-					player.points = player.points.div(2)
-					player.p.points = player.p.points.div(2)
 					player.paradox.paradoxPower = player.paradox.paradoxPower.add(tmp.paradox.buyables[21].gain)
 					player.paradox.didyagetit = tmp.paradox.buyables[21].gain
+					player.points = player.points.div(2)
+					player.p.points = player.p.points.div(2)
                 },
                 style: {'height':'125px', 'width':'350px'},
 				autoed() { return false },
@@ -10312,7 +10327,7 @@ addLayer("paradox", { //HALVEDLOL
 					effect() { return new Decimal(1).mul(Decimal.add(player.e.buyables[11], tmp.e.freeEnh)) },  
 					effectDisplay() { return "+"+format(this.effect()) },
 					formula() { return "x" },
-					cost() { return new Decimal("1e116") },
+					cost() { return new Decimal("5e115") },
 					unlocked() { return hasAchievement("ng/", 13) && player.e.unlocked },
 					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
@@ -10336,7 +10351,7 @@ addLayer("paradox", { //HALVEDLOL
 					effect() { return tmp.b.effect.root(10); },  
 					effectDisplay() { return "x"+format(this.effect()) },
 					formula() { return "yroot10(x)" },
-					cost() { return new Decimal("1e5392") },
+					cost() { return new Decimal("2.3e5835") },
 					unlocked() { return hasAchievement("ng/", 35) },
 					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
@@ -10345,7 +10360,7 @@ addLayer("paradox", { //HALVEDLOL
 				23: {
 					title: "The Power To Fuel It All",
 					description: "Generator Power's generation is raised to the power of 1.5.",
-					cost() { return new Decimal("5e5967") },
+					cost() { return new Decimal("1e6275") },
 					unlocked() { return hasUpgrade("paradox", 22) },
 					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
@@ -10354,20 +10369,20 @@ addLayer("paradox", { //HALVEDLOL
 				24: {
 					title: "Ready. Set. Inflate!",
 					description: "Quirk upgrades's scaling is delayed by 3 global second.",
-					cost() { return new Decimal("1e11400") },
+					cost() { return new Decimal("1e12058") },
 					unlocked() { return hasUpgrade("paradox", 23) },
 					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
 					currencyLayer: "paradox",
 				},
 				25: {
-					title: "Hey dawg, I heard you like Prestige Tree... [WIP]",
+					title: "Hey dawg, I heard you like Prestige Tree...",
 					description: "Unlock Hyper Prestige Points.",
-					cost() { return new Decimal("1e220000") },
+					cost() { return new Decimal("1e216000") },
 					unlocked() { return hasUpgrade("paradox", 24) },
-					currencyInternalName: "points",
+					currencyInternalName: "paradoxDead",
 					currencyDisplayName: "Dissolved Drained Distortions",
-					currencyLayer: "c",
+					currencyLayer: "paradox",
 				},
 		},
 		doReset(resettingLayer) {
@@ -10409,6 +10424,7 @@ addLayer("paradox", { //HALVEDLOL
 			player.r.unlocked = false
 			player.ai.unlocked = false
 			player.c.unlocked = false
+            layerDataReset("hp")
 		},
         hotkeys: [
             {key: "k", description: "Press K to Annihilate", onPress(){if (hasAchievement("ng/", 13)) tmp.paradox.buyables[21].buy()}},
@@ -10440,7 +10456,7 @@ addLayer("ng/", { //HALVEDLOL
 			},
 			"Achievements": {
 				content: [
-					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/29<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/4" } ], "blank", "blank", "achievements",
+					"blank", ["display-text", function() { return "Achievements: "+player["ng/"].thoseAchievements+"/37<br>Secret Achievements: "+player["ng/"].DEEZNUTS+"/5" } ], "blank", "blank", "achievements",
 				],
 			},
 		},
@@ -10479,7 +10495,7 @@ addLayer("ng/", { //HALVEDLOL
                 name: "Generator wasn't that good in all honesty",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.b.unlocked && player.g.unlocked && (tmp.b.effect >= (tmp.g.powerEff.pow(2))) && player.g.points >= 2 && player.p.time.gte(60) },
-                tooltip: "Reach (Booster's Effect > Generator Power's Effect^2) 60 seconds after reset while having at least 2 generators. Reward: Generators are 16.667% stronger",
+                tooltip: "Reach (Booster's Effect > Generator Power's Effect^2) 60 seconds after reset while having at least 2 generators.\nReward: Generators are 16.667% stronger",
 				image: "images/achs2/15.png",
             },
             16: {
@@ -10514,21 +10530,21 @@ addLayer("ng/", { //HALVEDLOL
                 name: "Dual Disaster",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.t.unlocked && player.s.unlocked },
-                tooltip: "Unlock Time and Space. Reward: Time capsule's base and space energy's effect are 69% stronger.",
+                tooltip: "Unlock Time and Space.\nReward: Time capsule's base and space energy's effect are 69% stronger.",
 				image: "images/achs2/24.png",
             },
             25: {
                 name: "Paradox Blaze",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.paradox.paradoxDead.gte("1.08e11") },
-                tooltip: "Reach 1e420 Dissolved Drained Distortions. Reward: x1e42 PPP gain",
+                done() { return player.paradox.paradoxDead.gte("1e420") },
+                tooltip: "Reach 1e420 Dissolved Drained Distortions.\nReward: x1e42 PPP gain",
 				image: "images/achs2/25.png",
             },	
             26: {
                 name: "Godspeed Developer's Fist",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.devSpeed >= 20 },
-                tooltip: "Reach 20x Global Speed. Reward: x1e20 Generator Power gain",
+                tooltip: "Reach 20x Global Speed.\nReward: x1e20 Generator Power gain",
 				image: "images/achs2/26.png",
             },
 			31: {
@@ -10542,35 +10558,35 @@ addLayer("ng/", { //HALVEDLOL
                 name: "FINALLY... AT LAST!",
                 done() { return player.points.gte("1e9000") },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 1e9000 points. Reward: Reveal 3rd NG/ layer.<br>(check paradox layer)",
+                tooltip: "Reach 1e9,000 points.\nReward: Reveal 3rd NG/ layer.\n(check paradox layer)",
 				image: "images/achs2/32.png",
             },
             33: {
                 name: "I hate my job",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.b.unlocked && player.g.points >= 4 && player.g.unlocked && (tmp.b.effect >= (tmp.g.effect.pow(19))) && player.p.time.gte(60) },
-                tooltip: "Reach (Booster's Effect > Generator's Effect^19) 60 seconds after reset while having at least 4 generators. Reward: Generator Power's effect is 19% stronger",
+                done() { return player.b.unlocked && player.g.points >= 4 && player.g.unlocked && (tmp.b.effect >= (tmp.g.powerEff.pow(19))) && player.p.time.gte(18000) },
+                tooltip: "Reach (Booster's Effect > Generator Power's Effect^19) 5 hours after reset while having at least 4 generators.\nReward: Generator Power's effect is 19% stronger",
 				image: "images/achs2/33.png",
             },
             34: {
-                name: "That's very suspiciously looking timewall",
+                name: `That's very suspiciously looking "timewall"`,
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.shenanigans.buyables[11] >= 1 && player.shenanigans.buyables[21] >= 1 && player.shenanigans.buyables[22] >= 1 && player.shenanigans.buyables[31] >= 1 && player.shenanigans.buyables[32] >= 1 && player.shenanigans.buyables[33] >= 1 && player.shenanigans.buyables[34] >= 1},
-                tooltip: "Buy 7 different SCAB buildings once. Reward: Unlocks very important SCAB building.",
+                tooltip: "Buy 7 different SCAB buildings once.\nReward: Unlocks very important SCAB building.",
 				image: "images/achs2/34.png",
             },
             35: {
                 name: "Short Lived Satisfaction",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                done() { return player.points.gte("1e6015") && inChallenge("h", 31) && challengeCompletions("h", 31) >= 3 },
-                tooltip: 'Reach 1e6015 points in "Timeless" after 3 completions.<br>(check paradox layer, again)',
+                done() { return player.points.gte("1e6000") && inChallenge("h", 31) && challengeCompletions("h", 31) >= 4 },
+                tooltip: 'Reach 1e6,000 points in "Timeless" after 4 completions.\n(check paradox layer, again)',
 				image: "images/achs2/35.png",
 			},
             36: {
                 name: "The Best Year Award goes to...",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return player.h.points.gte("2e21") },
-                tooltip: 'Reach 2e21 hindrance spirits. Reward: Quirk Layers are 23% stronger.',
+                tooltip: 'Reach 2e21 hindrance spirits.\nReward: Quirk Layers are 23% stronger.',
 				image: "images/achs2/36.png",
 			},
 			41: {
@@ -10584,35 +10600,35 @@ addLayer("ng/", { //HALVEDLOL
                 name: "POV: You broke the only available layer",
                 done() { return player.ss.unlocked },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Perform a Subspace reset. Compensation: You gain 1 subspace per second and you gain 10 space buildings each per second.",
+                tooltip: "Perform a Subspace reset.\nCompensation: You gain 1 space building each per tick until next achievement and gain 1 subspace per second.",
 				image: "images/achs2/42.png",
             },
 			43: {
                 name: "Take A Break",
                 done() { return player.ss.points.gte(2) },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 2 Subspaces. Reward: Space Buildings are automated. (Check AB side layer)",
+                tooltip: "Reach 2 Subspaces.\nReward: Space Buildings are automated.\n(Check AB side layer)",
 				image: "images/achs2/43.png",
             },
 			44: {
                 name: "MR. BEEEEAST!!!!",
-                done() { return player.points.gte("1e65600") },
+                done() { return player.points.gte("1e67235") },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 1e65600 points. Reward: You gain more SCABs based on completed NG/ achievements. (so cool)",
+                tooltip: "Reach 1e67,235 points.\nReward: You gain more SCABs based on completed NG/ achievements.\n(so cool)",
 				image: "images/achs2/44.png",
             },
 			45: {
                 name: "On The Verge of Breakdown",
                 done() { return new Decimal(tmp.q.resetGain).gte("6.4e64")},
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Accumulate enough Generator Powers to be able to get 6.4e64 quirks with a single Quirk reset. Reward: Shenanigious Chaotic Anti Balancer boosts Quirk Layers.",
+                tooltip: "Accumulate enough Generator Powers to be able to get 6.4e64 quirks with a single Quirk reset.\nReward: Shenanigious Chaotic Anti Balancer boosts Quirk Layers.",
 				image: "images/achs2/45.png",
             },
 			46: {
                 name: 'WHAT DO YOU MEAN <b>"I fixed Subspace layer"</b>?!',
-                done() { return player.ss.subspace.gte(350000) && player.h.points.gte("1e60") && player.q.points.gte("1e75") },
+                done() { return player.ss.subspace.gte(520000) && player.h.points.gte("2e59") && player.q.points.gte("2.5e74") },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 350000 subspaces, 1e60 hindrance spirits and 1e75 quirks. Reward: Fix Subspace layer's gain.",
+                tooltip: "Reach 520,000 subspaces, 2e59 hindrance spirits and 2.5e74 quirks.\nReward: Fix Subspace layer's gain.",
 				image: "images/achs2/46.png",
             },
 			51: {
@@ -10620,36 +10636,92 @@ addLayer("ng/", { //HALVEDLOL
                 done() { return tmp.q.impr.amount.gte(1) },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 tooltip: "Reach 1 Quirk Improvement.",
-				image: "images/achs2/46.png",
+				image: "images/achs2/51.png",
             },
 			52: {
                 name: "What did I do to you to deserve this",
                 done() { return player.m.unlocked && player.ba.unlocked },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 tooltip: "Unlock Magic and Balance layers.",
-				image: "images/achs2/46.png",
+				image: "images/achs2/52.png",
             },
 			53: {
                 name: "My disappointment is immeasurable and my day is ruined.",
                 done() { return player.m.hexes.gte(1) },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 tooltip: 'Use magic.',
-				image: "images/achs2/s14.png",
+				image: "images/achs2/53.png",
             },
 			54: {
                 name: '"Solarity is my favorite layer"',
                 done() { return player.o.buyables[12].gte(Decimal.pow(2, 1024)) },
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
-                tooltip: "Reach 1.79e308 Tachoclinal Plasmas. Reward: You slowly gain Paradoxes up to 90% of reset gain's magnitude in global time.",
-				image: "images/achs2/46.png",
+                tooltip: "Reach 1.79e308 Tachoclinal Plasmas.\nReward: You slowly gain Paradoxes up to 90% of reset gain's magnitude in global time.",
+				image: "images/achs2/54.png",
             },
             55: {
                 name: "wait what",
 				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
                 done() { return tmp.hp.layerShown },
-                tooltip: "Unlock Hyper Prestige Layer",
-				image: "images/achs2/26.png",
+                tooltip: "Unlock Hyper Prestige Layer.",
+				image: "images/achs2/55.png",
             },
+            56: {
+                name: "Hyper The Modding Tree: The Anniversary Edition",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.points.gte("1e1000000") },
+                tooltip: "Reach 1e1,000,000 points.",
+				image: "images/achs2/56.png",
+            },
+            61: {
+                name: "Did he just trick us into playing Prestige Tree 11 times?",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.hp.upgrades.length >= 3},
+                tooltip: "Purchase three Hyper Prestige upgrades.\nReward: Unlock more HP content",
+				image: "images/achs2/61.png",
+            },
+            62: {
+                name: "<br><br><br><br>Feels familiar, no?",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.hp.upgrades.length >= 4},
+                tooltip: "Unlock Loop, Enchantment or Wormhole Layer.",
+				image: "images/achs2/62.png",
+            },
+            63: {
+                name: "Could've been implemented much better in all honesty",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.hp.hyperpoints.gte("1e520")},
+                tooltip: "Reach 1e520 super points.\nReward: Unlock Alpha Challenges and Paradox affects Hyper Prestige layer",
+				image: "images/achs2/63.png",
+            },
+			64: {
+                name: "It's like I'm wearing nothing at all... Nothing at all.",
+                done() { return player.omega.points >= 5 },
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                tooltip: "Reach 5th Omega Level.",
+				image: "images/achs2/64.png",
+            },
+            65: {
+                name: "Paradox Blaze",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.paradox.paradoxDead.gte("1e2222222") },
+                tooltip: "Reach 1e2,222,222 Dissolved Drained Distortions.\nReward: Phantom Souls are 22.22% cheaper",
+				image: "images/achs2/65.png",
+            },
+            66: {
+                name: "Paradox Blaze",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.hp.hyperpoints.gte("1e1000") },
+                tooltip: `Reach 1e1,000 super points.\nReward: "Solarity is my favorite layer"'s reward is much better`,
+				image: "images/achs2/66.png",
+            },	
+            71: {
+                name: "Paradox Blaze",
+				onComplete() { player["ng/"].thoseAchievements = player["ng/"].thoseAchievements.add(1) },
+                done() { return player.points.gte("1e88888888") && inChallenge("h",41) },
+                tooltip: `Reach 1e88,888,888 points in "Central Madness".\nReward: Unlocks 2nd page in Shenanigans layer`,
+				image: "images/achs2/71.png",
+            },	
 			111: {
                 name: "Zzzzzzzzz...",
                 done() { return player.g.points.eq(1) && player.b.unlocked == false && player.g.power.gte(1006) && hasAchievement("ng/", 13) == false  && player.omega.points.eq(0) },
@@ -10682,6 +10754,14 @@ addLayer("ng/", { //HALVEDLOL
 				unlocked() { return this.done() || hasAchievement("ng/", 114) },
 				image: "images/achs2/s14.png",
             },
+			114: {
+                name: "Stay the hell away from me!",
+                done() { return hasAchievement("ng/",71) && (player.timePlayed/365.25/24/60/60)< 100},
+				onComplete() { player["ng/"].DEEZNUTS = player["ng/"].DEEZNUTS.add(1) },
+                tooltip: 'Beat the entirety of NG/ in just 1 century',
+				unlocked() { return this.done() || hasAchievement("ng/", 114) },
+				image: "images/achs2/s14.png",
+            },
 		},
 		update(diff) {	// Added this section to call adjustNotificationTime every tick, to reduce notification timers
 			adjustNotificationTime(diff);
@@ -10707,20 +10787,39 @@ addLayer("shenanigans", { //HALVEDLOL
             return ("GOOD LUCK MAKING NG//")
         },
 		effect() {
-			let eff = shenanigansBingo()
+			let eff = shenanigansBingo().pow(3)
 			if(player.shenanigans.buyables[81]>=1) eff = eff.times(tmp.shenanigans.buyables[81].effect)
+            if(hasAchievement("ng/", 44)) eff = eff.times(new Decimal(player["ng/"].thoseAchievements).add(1))
+            if(player.omega.points.gte(5)) eff = eff.times(player.hp.hyperpoints.add(1).log(10).add(1))
 			return eff
 		},
 		update(diff) {
-			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(hasAchievement("ng/", 44)?new Decimal(player["ng/"].thoseAchievements).add(1):1).times(diff))
+			player.shenanigans.ShenanigansChaosAntiBalancers = player.shenanigans.ShenanigansChaosAntiBalancers.add(tmp.shenanigans.effect.times(diff))
 		},
 		unlocked () {return false},
+        microtabs: {
+            funny: {
+                "First Page": {
+                    content: [
+                        ["row", [["column", [["buyable", 11]]],"blank",["column", [["buyable", 21],"blank",["buyable", 22]]],"blank",["column", [["buyable", 31],"blank",["buyable", 32],"blank",["buyable", 33],"blank",["buyable", 34],"blank",["buyable", 35]]]]],"blank","blank",["row", [["buyable",81],"blank",["buyable",111]]]
+                    ],
+                    unlocked(){return hasAchievement("ng/",71)}
+                },
+                "Second Page": {
+                    content: [
+                        ["display-text", function(){return "Hey guys, it's been a long time since I made an update for NG/...<br><br>or any trees at this point<br><br>I've lost my motivation to work on this tree due HP layer giving me the most trouble when it came to making it feel natural to PT:R<br><br>and I simply had no motivation to do anything, lol<br><br>So yeah, enjoy the endgame."}],
+                        ["row", [["buyable",81],"blank",["buyable",111]]]
+                    ],
+                    unlocked(){return hasAchievement("ng/",71)}
+                }
+            }
+        },
 		tabFormat: {
 			"Purgatory": {
 				content: [
 					"blank", "blank", 
 					["display-text", function() { return player.shenanigans.unlocked?'<h1 style="color: #791C29;">"Greetings, <h1/><h1 style="color: #420420;">old friend<h1/><h1 style="color: #791C29;">."<h1/>':'<h3 style="color: #791C29;">"Come back when you reach 1e9048 points".<h3/>' }], "blank", ["infobox", "lore"], "blank",
-					["display-text", function() { return player.shenanigans.unlocked?'<span style="color: #791C29">"Well goddamn bro, you got '+formatWhole(shenanigansBingo())+' BIG FUCKING BINGO ROWS... I know, sounds dumb. What DOES NOT sound as dumb is the fact you gain '+format(tmp.shenanigans.effect)+' SCABs per second. ('+format(tmp.shenanigans.effect.times(player.devSpeed))+'/s to be precise)<br>i have no idea what SCAB means either"<br><br>"oh yeah, almost forgot. You currently have '+format(player.shenanigans.ShenanigansChaosAntiBalancers)+' SCABs.<br><br>"(also also you made '+format(Decimal.plus(player.shenanigans.ShenanigansChaosAntiBalancers, player.shenanigans.refund))+' SCABs in total)"</span>':'' }], "blank", "buyables"
+					["display-text", function() { return player.shenanigans.unlocked?'<span style="color: #791C29">"Well goddamn bro, you got '+formatWhole(shenanigansBingo())+' BIG FUCKING BINGO ROWS... I know, sounds dumb. What DOES NOT sound as dumb is the fact you gain '+format(tmp.shenanigans.effect)+' SCABs per second. ('+format(tmp.shenanigans.effect.times(player.devSpeed))+'/s to be precise)<br>i have no idea what SCAB means either"<br><br>"oh yeah, almost forgot. You currently have '+format(player.shenanigans.ShenanigansChaosAntiBalancers)+' SCABs.<br><br>"(also also you made '+format(Decimal.plus(player.shenanigans.ShenanigansChaosAntiBalancers, player.shenanigans.refund))+' SCABs in total)"</span>':'' }],"blank",["microtabs", "funny", {"border": "0px"}]
 				],
 			},
 		},
@@ -11154,7 +11253,7 @@ addLayer("shenanigans", { //HALVEDLOL
 			},
 		},
 	componentStyles: {
-		"buyable"() { return {'width': '125px', 'height': '150px', 'margin-left': '0px', 'margin-right': '0px'} },
+		"buyable"() { return {'width': '192px', 'height': '128px', 'margin-left': '0px', 'margin-top': '64px', 'margin-right': '0px'} },
 	},
 })
 
@@ -11162,13 +11261,13 @@ addLayer("hp", { //HALVEDLOL
         name: "hyperprestige", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "HP", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-        color: "#31aeb0",
-        requires: new Decimal(10), // Can be a function that takes requirement increases into account
+        color: "#016c70",
+        requires: new Decimal("1e1000000"), // Can be a function that takes requirement increases into account
         resource: "hyper prestige points", // Name of prestige currency
         baseResource: "points", // Name of resource prestige is based on
-        baseAmount() {return player.hp.hyperpoints}, // Get the current amount of baseResource
+        baseAmount() {return player.points}, // Get the current amount of baseResource
         type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-        exponent() { return 0.5 }, // Prestige currency exponent
+        exponent() { return 0.000000100343335 }, // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses //HALVEDLOL
             mult = new Decimal(1)
             return mult
@@ -11178,19 +11277,371 @@ addLayer("hp", { //HALVEDLOL
 			return exp;
         },
 		update(diff){
-			player.hp.hyperpoints = player.hp.hyperpoints.add(getSuperPointGen().mul(diff).div(tmp.paradox.effect.root(2)))
+			player.hp.hyperpoints = player.hp.hyperpoints.add(getSuperPointGen().mul(diff).div(inChallenge("hp",11)&&player.hp.alphaLevel>=4?tmp.paradox.effect:hasAchievement("ng/", 63)?1:tmp.paradox.effect.root(2)))
+			player.hp.superGenPower = player.hp.superGenPower.add(tmp.hp.buyables[22].effect.mul(diff).div(inChallenge("hp",11)&&player.hp.alphaLevel>=4?tmp.paradox.effect:hasAchievement("ng/", 63)?1:tmp.paradox.effect.root(2)))
+			if(hasMilestone("hp",0)&&tmp.hp.buyables[11].canAfford){
+				let amt = new Decimal(hasUpgrade("hp",11)?tmp.hp.upgrades[11].effect:1).mul(hasUpgrade("hp",21)?player.hp.buyables[21].add(1):1).mul(hasUpgrade("hp",22)?player.hp.superGenPower.add(1).root(3):1)
+				player.hp.buyables[11] = player.hp.buyables[11].add(amt)
+				player.hp.bestBuyables[0] = player.hp.bestBuyables[0].max(player.hp.buyables[11])
+				player.hp.totalBuyables[0] = player.hp.totalBuyables[0].add(amt)
+			}
 		},
-		tabFormat: [["display-text", function(){return "<span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>You have</span> <h2 style ='display: inline; font-family: 'Lucida Console', 'Courier New', monospace; transition-duration: 0.5s; text-align: center; font-weight: bold; margin: auto;'>"+format(player.hp.hyperpoints)+"</h2> <span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>super points</span>"}],
-				    "blank", "blank", "blank", ["tree", treeTest]],
+		clickables: {
+			rows: 1,
+			cols: 2,
+			11: {
+				title: "\\\u00A0\u00A0\u00A0\u00A0\u00A0/<br>\\\u00A0\u00A0\u00A0/<br>\\\u00A0/<br>v",
+				unlocked() { return hasAchievement("ng/",61) },
+				canClick() { return player.hp.alphaLevel>=2&&!inChallenge("hp",11) },
+				onClick() { player.hp.alphaLevel=player.hp.alphaLevel-1 },
+			},
+			12: {
+				title: "^<br>/\u00A0\\<br>/\u00A0\u00A0\u00A0\\<br>/\u00A0\u00A0\u00A0\u00A0\u00A0\\",
+				unlocked() { return hasAchievement("ng/",61) },
+				canClick() { return !inChallenge("hp",11)&&player.hp.alphaLevel<=player.hp.challenges[11]&&player.hp.alphaLevel<4 },
+				onClick() { player.hp.alphaLevel=player.hp.alphaLevel+1 },
+			},
+		},
+		challenges: {
+			rows: 1,
+			cols: 1,
+			11: {
+				name(){return "Alpha Level "+formatWhole(player.hp.alphaLevel)+":<br>["+["no","BACK TO THE ROOTS","DUAL DISFUNCTION","YOU LOVED SPACE LAYER, NOW YOU'RE GOING TO LOVE TIME LAYER","Inflational Madness"][player.hp.alphaLevel]+"]"},
+				completionLimit: Infinity,
+				challengeDescription(){return (
+                    player.hp.alphaLevel>=4?`On top of other Alpha Level nerfs...<br><h5 style='font-size: 10px;'>Paradox's effect is reversed in Hyper Prestige layer and nullifies Alpha Level 3's 2nd effect`:
+                    player.hp.alphaLevel==3?`On top of other Alpha Level nerfs...<br><h5 style='font-size: 10px;'>You start off with 15 SB and 15 SG, but Row 3 layers are /1e40 cheaper and they share cost scaling`:
+                    player.hp.alphaLevel==2?`On top of other Alpha Level nerfs...<br><h5 style='font-size: 10px;'>Super Boosters and Super Generators nerf each other<br>Super Booster Nerf: ${format(player.hp.buyables[22].pow(10).sqrt().add(1))}/ `+(tmp.nerdMode?"(sqrt(n^10)+1)":"")+`<br>Super Generator Nerf: ${format(player.hp.buyables[21].pow(10).cbrt().add(1))}/ `+(tmp.nerdMode?"(cbrt(n^10)+1)":""):
+                    "1st Omega Level is taken too literally, square rooting your Super Point generation.")+"<br><br>Your Super Point is rooted by "+format(new Decimal(1).add(player.hp.alphaLevel/3))+" after everything"
+                },
+				unlocked() { return hasAchievement("ng/",63) },
+				goal() { return new Decimal(["3.75e13","3.75e13","3.75e13",new Decimal("3.75e13").pow(1.25),"1e50"][player.hp.alphaLevel||0]) },
+				currencyDisplayName: "super points",
+				currencyInternalName: "hyperpoints",
+				currencyLayer: "hp",
+				rewardDescription(){return (
+                    player.hp.alphaLevel>=3?"SPT Post-1.79e308 cost scaling is nerfed":
+                    player.hp.alphaLevel==2?"Super Point root nerf of highest completed Alpha Level boosts Quirk Layer's exponent at reduced rate (x"+format(player.hp.challenges[11]/18+1)+")":
+                    "Omega Levels affect super point's effect")
+                },
+				onComplete(){
+					if(player.hp.alphaLevel>player.hp.challenges[11]) player.hp.challenges[11]=player.hp.alphaLevel
+				},
+				onStart(testInput=false) {
+					if (testInput) {
+						player.hp.hyperpoints=new Decimal(10)
+						player.hp.superGenPower=new Decimal(0)
+						player.hp.buyables[11]=new Decimal(0)
+						player.hp.buyables[12]=new Decimal(0)
+						player.hp.buyables[21]=new Decimal(0)
+						player.hp.buyables[22]=new Decimal(0)
+						player.hp.buyables[31]=new Decimal(0)
+						player.hp.buyables[32]=new Decimal(0)
+						player.hp.buyables[33]=new Decimal(0)
+						player.hp.bestBuyables=[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)]
+						player.hp.totalBuyables=[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)]
+                        if(player.hp.alphaLevel>=3){
+                            player.hp.buyables[21]=new Decimal(15)
+                            player.hp.buyables[22]=new Decimal(15)
+                            player.hp.bestBuyables[2]=new Decimal(15)
+                            player.hp.totalBuyables[2]=new Decimal(15)
+                            player.hp.bestBuyables[3]=new Decimal(15)
+                            player.hp.totalBuyables[3]=new Decimal(15)
+                        }
+					}
+				},
+                style() {
+                    return {
+                        'background-color': player.hp.challenges[11] >= player.hp.alphaLevel ? '#77bf5f' : '',
+                        'border-radius': '10%',
+                    }
+                }
+			}
+		},
+		milestones:{
+			0: {
+				requirementDescription: "1 Total Hyper Prestige Point",
+				done() { return player.hp.total.gte(1) },
+				effectDescription: "You autobuy Super Prestige and they cost nothing.",
+			},
+			1: {
+				requirementDescription: "120 Total Hyper Prestige Points",
+				done() { return player.hp.total.gte(120) },
+				effectDescription: "You keep Super Prestige Tree on all resets.",
+			},
+		},
+		doReset(resettingLayer){
+			let keep = [];
+			if (hasMilestone("hp", 0)) keep.push("milestones")
+			if ((layers[resettingLayer].row > this.row&&!hasMilestone("hp",1))||layers[resettingLayer].name == "hyperprestige"){
+				player.hp.hyperpoints=new Decimal(10)
+				player.hp.superGenPower=new Decimal(0)
+				player.hp.buyables[11]=new Decimal(0)
+				player.hp.buyables[12]=new Decimal(0)
+				player.hp.buyables[21]=new Decimal(0)
+				player.hp.buyables[22]=new Decimal(0)
+				player.hp.buyables[31]=new Decimal(0)
+				player.hp.buyables[32]=new Decimal(0)
+				player.hp.buyables[33]=new Decimal(0)
+				player.hp.bestBuyables=[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)]
+				player.hp.totalBuyables=[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)]
+			}
+		},
+		upgrades: {
+			rows: 3,
+			cols: 3,
+			11:{
+				title: "OVERSENDENCE:<br>Super Prestige",
+				description: "Hyper Prestige Points boost Super Prestige Point gain",
+				effect(){return player.hp.points.add(2).pow(3/4)},
+				effectDisplay(){return format(tmp.hp.upgrades[11].effect)+"x" },
+				formula(){return "(x+2)^(3/4)"},
+				cost: new Decimal(1),
+			},
+			21:{
+				title: "OVERCLOCK:<br>Super Booster",
+				description: "SB's base is 4x and their amount multiplies Super Prestige Point gain",
+				cost: new Decimal(5),
+			},
+			22:{
+				title: "OVERDRIVE:<br>Super Generator",
+				description: "SG's base is 4 and SG's Power multiplies Super Prestige Point gain",
+				cost: new Decimal(5),
+			},
+			31:{
+				title: "UNLOCK:<br>Loop",
+				description: "",
+				onPurchase(){
+					player.hp.buyables[31] = player.hp.buyables[31].add(1)
+					player.hp.bestBuyables[4] = player.hp.bestBuyables[4].max(player.hp.buyables[31])
+					player.hp.totalBuyables[4] = player.hp.totalBuyables[4].add(1)
+				},
+				cost(){return new Decimal(hasUpgrade("hp",32)&&hasUpgrade("hp",33)&&!hasUpgrade("hp",31)?"1e250":(hasUpgrade("hp",32)||hasUpgrade("hp",33))&&!hasUpgrade("hp",31)?"1e70":"1e40")},
+				currencyDisplayName: "super points",
+				currencyInternalName: "hyperpoints",
+				currencyLayer: "hp",
+			},
+			32:{
+				title: "UNLOCK:<br>Enchantment",
+				description: "",
+				onPurchase(){
+					player.hp.buyables[32] = player.hp.buyables[32].add(1)
+					player.hp.bestBuyables[5] = player.hp.bestBuyables[5].max(player.hp.buyables[32])
+					player.hp.totalBuyables[5] = player.hp.totalBuyables[5].add(1)
+				},
+				cost(){return new Decimal(hasUpgrade("hp",31)&&hasUpgrade("hp",33)&&!hasUpgrade("hp",32)?"1e250":(hasUpgrade("hp",31)||hasUpgrade("hp",33))&&!hasUpgrade("hp",32)?"1e70":"1e40")},
+				currencyDisplayName: "super points",
+				currencyInternalName: "hyperpoints",
+				currencyLayer: "hp",
+			},
+			33:{
+				title: "UNLOCK:<br>Wormhole",
+				description: "",
+				onPurchase(){
+					player.hp.buyables[33] = player.hp.buyables[33].add(1)
+					player.hp.bestBuyables[6] = player.hp.bestBuyables[6].max(player.hp.buyables[33])
+					player.hp.totalBuyables[6] = player.hp.totalBuyables[6].add(1)
+				},
+				cost(){return new Decimal(hasUpgrade("hp",32)&&hasUpgrade("hp",31)&&!hasUpgrade("hp",33)?"1e439":(hasUpgrade("hp",32)||hasUpgrade("hp",31))&&!hasUpgrade("hp",33)?"1e70":"1e40")},
+				currencyDisplayName: "super points",
+				currencyInternalName: "hyperpoints",
+				currencyLayer: "hp",
+			}
+		},
+		tabFormat:{
+			"Super Prestige Tree":{
+				content: [["display-text", function(){return "<span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>You have</span> <h2 style ='display: inline; font-family: 'Lucida Console', 'Courier New', monospace; transition-duration: 0.5s; text-align: center; font-weight: bold; margin: auto;'>"+format(player.hp.hyperpoints)+"</h2> <span style='transition-duration: 0.5s; text-align: center; font-family: 'Inconsolata', monospace; font-weight: bold; margin: auto;'>super points, multiplying your Point generation by "+format(player.hp.hyperpoints.add(1).pow(1000).pow(player.hp.challenges[11]>=1?tmp.omega.effect:1))+"x</span>"}],["display-text",function(){return getSuperPointGen().gt(0)?`(${format(getSuperPointGen())}/sec)`+(hasAchievement("ng/", 63)?inChallenge("hp",11)&&player.hp.alphaLevel>=4?"<br>(("+format(getSuperPointGen().div(player.devSpeed))+"/s))":"<br>(("+format(getSuperPointGen().mul(player.devSpeed))+"/s))":""):``}],"blank","blank",["infobox","statistics"],"blank","blank",["row",[["buyable",[11]],"blank","blank",["buyable",[12]]]],"blank",["row",[["buyable",[21]],"blank","blank",["buyable",[22]]]],"blank",["row",[["buyable",[31]],"blank","blank",["buyable",[32]],"blank","blank",["buyable",[33]]]]],
+				unlocked(){return hasAchievement("ng/",56)}
+			},
+			"Hyper Dimension":{
+				content: ["main-display","prestige-button","resource-display","milestones","blank","upgrades","blank",["row",[["clickable", 11],"blank","blank","challenges","blank","blank",["clickable", 12]]]],
+				unlocked(){return hasAchievement("ng/",56)}
+			}
+		},
         row: 3, // Row the layer is in on the tree (0 is the first row)
 		branches: ["sg", "sb"],
-        layerShown(){return hasUpgrade("paradox", 25)},
+        layerShown(){return hasUpgrade("paradox", 25) && player.sb.unlocked && player.sg.unlocked},
 		startData() { return {
 			unlocked: true,
+			alphaLevel: 1,
 			points: new Decimal(0),
 			best: new Decimal(0),
 			total: new Decimal(0),
 			first: 0,
-			hyperpoints: new Decimal(10)
+			hyperpoints: new Decimal(10),
+			superGenPower: new Decimal(0),
+			bestBuyables:[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)],
+			totalBuyables:[new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)],
+            fixtape: new Decimal(0),
 		}},
+		infoboxes: {
+			statistics: {
+				title: "Stats",
+				body() {
+                    return `
+                    Your best super prestige points is ${format(player.hp.bestBuyables[0])}
+                    <br>You have made a total of ${format(player.hp.totalBuyables[0])} super prestige points`
+                    +(player.hp.totalBuyables[2].gte(1)?`<br><br>
+                        <br>Your best super boosters is ${formatWhole(player.hp.bestBuyables[2])}
+                        <br>You have made a total of ${formatWhole(player.hp.totalBuyables[2])} super boosters`:``
+                    )+(player.hp.totalBuyables[3].gte(1)?`<br><br>
+                        <br>You have ${format(player.hp.superGenPower)} Super Generator Power, which boosts Super Point generation by ${format(player.hp.superGenPower.add(1).root(3))}x<br>
+                        <br>Your best super generators is ${formatWhole(player.hp.bestBuyables[3])}
+                        <br>You have made a total of ${formatWhole(player.hp.totalBuyables[3])} super generators`:``
+                    )+(player.hp.totalBuyables[4].gte(1)?`<br><br>
+                        <br>Your best loops is ${formatWhole(player.hp.bestBuyables[4])}
+                        <br>You have made a total of ${formatWhole(player.hp.totalBuyables[4])} loops`:``
+                    )+(player.hp.totalBuyables[5].gte(1)?`<br><br>
+                        <br>Your best enchantments is ${formatWhole(player.hp.bestBuyables[5])}
+                        <br>You have made a total of ${formatWhole(player.hp.totalBuyables[5])} enchantments`:``
+                    )+(player.hp.totalBuyables[6].gte(1)?`<br><br>
+                        <br>Your best wormholes is ${formatWhole(player.hp.bestBuyables[6])}
+                        <br>You have made a total of ${formatWhole(player.hp.totalBuyables[6])} wormholes`:``
+                    ) },
+			},
+		},
+		buyables:{
+			rows: 11,
+			cols: 3,
+			11:{
+				title: "Super Prestige",
+				effect(){
+					let eff = player.hp.buyables[11]
+					if(player.hp.buyables[12].gte(1)) eff=eff.mul(player.hp.buyables[11].add(2).root(2))
+					if(player.hp.buyables[12].gte(2)) eff=eff.mul(player.hp.hyperpoints.add(1).log(10).pow(0.75).add(1).pow(player.hp.buyables[12].gte(8)?player.hp.totalBuyables[0].plus(1).log10().plus(1).log10().div(5).plus(1):1))
+					if(player.hp.buyables[12].gte(4)) eff=eff.mul(Decimal.pow(1.4, player.hp.buyables[12]).pow(player.hp.buyables[12].gte(7)?2:1))
+					return eff
+				},
+				display(){return `Generates ${format(this.effect())} SP/sec<br>Amount: ${format(player.hp.buyables[11])}<br>Next: ${formatWhole(this.cost())}`},
+				cost(){return player.hp.buyables[11].add(1).root(player.hp.buyables[12].gte(6)?1.05:1).pow(2).div(player.hp.buyables[12].gte(3)?3.24:1).div(player.hp.buyables[12].gte(5)?new Decimal(player.hp.hyperpoints).add(1).log(10).pow(1/3).add(1).pow(player.hp.buyables[12].gte(8)?player.hp.totalBuyables[0].plus(1).log10().plus(1).log10().div(5).plus(1):1).pow(2):1).mul(10)},
+				canAfford(){return player.hp.hyperpoints.gte(this.cost())},
+				buy(){
+					let amt = new Decimal(hasUpgrade("hp",11)?tmp.hp.upgrades[11].effect:1).mul(hasUpgrade("hp",21)?player.hp.buyables[21].add(1):1).mul(hasUpgrade("hp",22)?player.hp.superGenPower.add(1).root(3):1)
+					let cost = player.hp.buyables[11].add(1).root(player.hp.buyables[12].gte(6)?1.05:1).pow(2).div(player.hp.buyables[12].gte(3)?3.24:1).div(player.hp.buyables[12].gte(5)?new Decimal(player.hp.hyperpoints).add(1).log(10).pow(1/3).add(1).pow(player.hp.buyables[12].gte(8)?player.hp.totalBuyables[0].plus(1).log10().plus(1).log10().div(5).plus(1):1).pow(2):1).mul(10)
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(hasMilestone("hp",0)?0:cost)
+					player.hp.buyables[11] = player.hp.buyables[11].add(amt)
+					player.hp.bestBuyables[0] = player.hp.bestBuyables[0].max(player.hp.buyables[11])
+					player.hp.totalBuyables[0] = player.hp.totalBuyables[0].add(amt)
+				},
+				style(){return{'background-color':(this.canAfford()?'#159295':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			12:{
+				title(){return [`SP Boost`,`Super Self-Synergy`,"More SP","Super Upgrade Power","Reverse SP Boost","WE NEED MORE SP","Super Useless","Super Column Leader","NO HONOR?"][player.hp.buyables[12]]},
+				effect(){return player.hp.buyables[12].pow(0.5)},
+				display(){return `Cost: ${formatWhole(this.cost())}`},
+				cost(){return [new Decimal(100),new Decimal(5000),new Decimal(1000000),new Decimal(750000000),new Decimal("3.75e13"),new Decimal("3.75e59"),new Decimal("3.75e116"),new Decimal("3.75e177"),new Decimal("1e78e308")][player.hp.buyables[12]]},
+				canAfford(){return player.hp.hyperpoints.gte(this.cost())},
+				buy(){
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[12] = player.hp.buyables[12].add(1)
+					player.hp.bestBuyables[1] = player.hp.bestBuyables[1].max(player.hp.buyables[12])
+					player.hp.totalBuyables[1] = player.hp.totalBuyables[1].add(1)
+				},
+				style(){return{'background-color':(this.canAfford()?'#159295':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			21:{
+				title: "Super Booster",
+				effect(){return new Decimal(hasUpgrade("hp",21)?4:2).add(tmp.hp.buyables[32].effect).pow(player.hp.buyables[21].mul(tmp.hp.buyables[31].effect)).mul(tmp.hp.buyables[33].effect.sb).div(inChallenge("hp",11)&&player.hp.alphaLevel>=2?player.hp.buyables[22].pow(10).sqrt().add(1):1)},
+				display(){return `Boosts SP gain by ${format(this.effect())}x<br>Amount: ${format(player.hp.buyables[21].mul(tmp.hp.buyables[31].effect))}<br>Next: ${formatWhole(this.cost())}`},
+				cost(){
+                    let cost = new Decimal(200).mul(new Decimal(5).pow((player.hp.buyables[21].pow(1.25))))
+                    if(cost.gte("1.79e308")) cost = player.hp.challenges[11]>=3?cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1)):cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1).pow(1.7976931348623277))
+                    return cost
+                },
+				canAfford(){return player.hp.hyperpoints.gte(this.cost())},
+				buy(){
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[21] = player.hp.buyables[21].add(1)
+					player.hp.bestBuyables[2] = player.hp.bestBuyables[2].max(player.hp.buyables[21])
+					player.hp.totalBuyables[2] = player.hp.totalBuyables[2].add(1)
+				},
+				unlocked(){return player.hp.totalBuyables[0].gte(1)},
+				style(){return{'background-color':(this.canAfford()?'#504899':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			22:{
+				title: "Super Generator",
+				effect(){return new Decimal(hasUpgrade("hp",22)?4:2).add(tmp.hp.buyables[32].effect).pow(player.hp.buyables[22].mul(tmp.hp.buyables[31].effect)).mul(tmp.hp.buyables[33].effect.sg).div(inChallenge("hp",11)&&player.hp.alphaLevel>=2?player.hp.buyables[21].pow(10).cbrt().add(1):1).sub(1).max(0)},
+				display(){return `Generates ${format(this.effect())} SG Power/sec<br>Amount: ${format(player.hp.buyables[22].mul(tmp.hp.buyables[31].effect))}<br>Next: ${formatWhole(this.cost())}`},
+				cost(){
+                    let cost = new Decimal(200).mul(new Decimal(5).pow((player.hp.buyables[22].pow(1.25))))
+                    if(cost.gte("1.79e308")) cost = player.hp.challenges[11]>=3?cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1)):cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1).pow(1.7976931348623277))
+                    return cost
+                },
+				canAfford(){return player.hp.hyperpoints.gte(this.cost())},
+				buy(){
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[22] = player.hp.buyables[22].add(1)
+					player.hp.bestBuyables[3] = player.hp.bestBuyables[3].max(player.hp.buyables[22])
+					player.hp.totalBuyables[3] = player.hp.totalBuyables[3].add(1)
+				},
+				unlocked(){return player.hp.totalBuyables[0].gte(1)},
+				style(){return{'background-color':(this.canAfford()?'#248239':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			31:{
+				title: "Loop",
+				effect() {
+					return new Decimal(1).add(player.hp.buyables[31]).root(4.95948445464039)
+				},
+				display() {return `Multiplies SB and SG amount effectiveness by ${format(this.effect())}x<br>Amount: ${formatWhole(player.hp.buyables[31])}<br>Next: ${formatWhole(this.cost())}`},
+				cost() {
+                    let cost = inChallenge("hp",11)&&player.hp.alphaLevel>=3? new Decimal(player.hp.alphaLevel>=4?"1e40":1).mul(new Decimal("1e5").pow((player.hp.buyables[31].add(player.hp.buyables[32]).add(player.hp.buyables[33]).pow(1.85)))) : new Decimal("1e40").mul(new Decimal("1e5").pow((player.hp.buyables[31].pow(1.85))))
+                    if(cost.gte("1.79e308")) cost = player.hp.challenges[11]>=3?cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1)):cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1).pow(1.7976931348623277))
+                    return cost
+                },
+				canAfford() {return player.hp.hyperpoints.gte(this.cost())},
+				buy() {
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[31] = player.hp.buyables[31].add(1)
+					player.hp.bestBuyables[4] = player.hp.bestBuyables[4].max(player.hp.buyables[31])
+					player.hp.totalBuyables[4] = player.hp.totalBuyables[4].add(1)
+				},
+				unlocked(){return hasUpgrade("hp",31)},
+				style(){return{'background-color':(this.canAfford()?'#006609':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			32:{
+				title: "Enchant<br>ment",
+				effect() {
+					return player.hp.buyables[32].root(1/3+1)
+				},
+				display() {return `Increases SB and SG base by +${format(this.effect())}<br>Amount: ${formatWhole(player.hp.buyables[32])}<br>Next: ${formatWhole(this.cost())}`},
+				cost() {
+                    let cost = inChallenge("hp",11)&&player.hp.alphaLevel>=3? new Decimal(player.hp.alphaLevel>=4?"1e40":1).mul(new Decimal("1e5").pow((player.hp.buyables[31].add(player.hp.buyables[32]).add(player.hp.buyables[33]).pow(1.85)))) : new Decimal("1e40").mul(new Decimal("1e5").pow((player.hp.buyables[32].pow(1.85))))
+                    if(cost.gte("1.79e308")) cost = player.hp.challenges[11]>=3?cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1)):cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1).pow(1.7976931348623277))
+                    return cost
+                },
+				canAfford() {return player.hp.hyperpoints.gte(this.cost())},
+				buy() {
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[32] = player.hp.buyables[32].add(1)
+					player.hp.bestBuyables[5] = player.hp.bestBuyables[5].max(player.hp.buyables[32])
+					player.hp.totalBuyables[5] = player.hp.totalBuyables[5].add(1)
+				},
+				unlocked(){return hasUpgrade("hp",32)},
+				style(){return{'background-color':(this.canAfford()?'#b82fbd':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+			33:{
+				title: "Wormhole",
+				effect() {
+					return {
+                        sb: player.hp.buyables[33].gte(1) ? player.hp.superGenPower.add(1).log(10).add(1).pow(player.hp.buyables[33].sub(1).mul(6).add(1).root(1.5)) : new Decimal(1),
+                        sg: player.hp.buyables[33].gte(1) ? tmp.hp.buyables[11].effect.add(1).log(10).add(1).pow(player.hp.buyables[33].sub(1).mul(6).add(1).root(1.5)) : new Decimal(1)
+                    }
+				},
+				display(){return `<h5>SB and SG effect are stronger based on SG Power and SB's amount<br>SB: x${format(this.effect().sb)}<br>SG: x${format(this.effect().sg)}<br>Amount: ${formatWhole(player.hp.buyables[33])}<br>Next: ${formatWhole(this.cost())}</h5>`},
+				cost(){
+                    let cost = inChallenge("hp",11)&&player.hp.alphaLevel>=3? new Decimal(player.hp.alphaLevel>=4?"1e40":1).mul(new Decimal("1e5").pow((player.hp.buyables[31].add(player.hp.buyables[32]).add(player.hp.buyables[33]).pow(1.85)))) : new Decimal("1e40").mul(new Decimal("1e5").pow((player.hp.buyables[33].pow(1.85))))
+                    if(cost.gte("1.79e308")) cost = player.hp.challenges[11]>=3?cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1)):cost.pow(cost.div("1.79e308").log("1.7976931348623277e308").add(1).pow(1.7976931348623277))
+                    return cost
+                },
+				canAfford(){return player.hp.hyperpoints.gte(this.cost())},
+				buy(){
+					player.hp.hyperpoints = player.hp.hyperpoints.sub(this.cost())
+					player.hp.buyables[33] = player.hp.buyables[33].add(1)
+					player.hp.bestBuyables[6] = player.hp.bestBuyables[6].max(player.hp.buyables[33])
+					player.hp.totalBuyables[6] = player.hp.totalBuyables[6].add(1)
+				},
+				unlocked(){return hasUpgrade("hp",33)},
+				style(){return{'background-color':(this.canAfford()?'#dfdfdf':''),'height':'100px','width':'100px','border':'4px solid','border-color':'rgba(0, 0, 0, 0.125)'}},
+			},
+		}
 })
