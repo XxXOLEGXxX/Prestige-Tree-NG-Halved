@@ -39,7 +39,8 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(0.5).mul(player.hp.hyperpoints.add(1).pow(1000).pow(player.hp.challenges[11]>=1?tmp.omega.effect:1)) //HALVEDLOL
+	let gain = new Decimal(0.5)
+    if (hasUpgrade("paradox",25)) gain = gain.mul(player.hp.hyperpoints.add(1).pow(1000).pow(player.hp.challenges[11]>=1?tmp.omega.effect:1)) //HALVEDLOL
 	if (hasMilestone("omega", 0)) gain = gain.times(2)
 	if (hasMilestone("omega", 3)) gain = gain.times(new Decimal(10).pow(tmp.paradox.effect.root(2)))
 	if (player.paradox.unlocked) gain = gain.times(tmp.paradox.effectPow)
